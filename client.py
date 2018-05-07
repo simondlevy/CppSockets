@@ -52,6 +52,6 @@ if __name__ == '__main__':
         if len(msg) < 1:
             break
 
-        print(msg.decode('utf-8')) # Python 3 requires decoding
+        print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
 
     sock.close()

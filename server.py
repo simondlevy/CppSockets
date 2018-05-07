@@ -33,7 +33,8 @@ if __name__ == '__main__':
     try:
         sock.bind((host, port)) # Note tuple!
     except socket.error:
-        print('bind() failed with code ' + str(msg[0]) + ': ' + msg[1])
+        print('bind() failed')
+        exit(1)
 
     sock.listen(1) # handle up to 1 back-logged connection
 
@@ -43,6 +44,10 @@ if __name__ == '__main__':
     client, address = sock.accept()
 
     print('Accepted connection')
+
+    thread = threading.Thread(target = talk, args = (sock,))
+    thread.daemon = True
+    thread.start()
 
     while True:
 
