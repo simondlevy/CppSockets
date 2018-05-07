@@ -2,7 +2,7 @@
 '''
 server.py
 
-Simple Python socket client example
+Simple Python socket server example
 
 Copyright Simon D. Levy 2018
 
@@ -38,7 +38,7 @@ print('Accepted connection')
 
 while True:
 
-    msg = input('> ').encode('utf-8')
+    msg = input('> ').encode('utf-8')  # Python3 requires encoding
 
     if len(msg) < 1:
         break

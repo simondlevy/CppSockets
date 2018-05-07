@@ -40,6 +40,7 @@ while True:
 
     if len(msg) < 1:
         break
-    print(msg.decode('utf-8'))
+
+    print(msg.decode('utf-8')) # Python 3 requires decoding
 
 sock.close()
