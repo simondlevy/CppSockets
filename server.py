@@ -2,7 +2,7 @@
 '''
 server.py
 
-Simple Python socket server example
+Simple Python socket server example with threading
 
 Copyright Simon D. Levy 2018
 
@@ -11,43 +11,52 @@ MIT License
 
 import socket
 import sys
+import threading
 
-if len(sys.argv) < 3:
-    print('Usage:   %s <HOST> <PORT>' % sys.argv[0])
-    print('Example: %s 137.113.118.3 20000' % sys.argv[0])
-    exit(1)
 
-host = sys.argv[1]
-port = int(sys.argv[2])
+def talk(sock):
 
-sock = socket.socket()
+    return
 
-try:
-    sock.bind((host, port)) # Note tuple!
-except socket.error:
-    print('bind() failed with code ' + str(msg[0]) + ': ' + msg[1])
+if __name__ == '__main__':
 
-sock.listen(1) # handle up to 1 back-logged connection
+    if len(sys.argv) < 3:
+        print('Usage:   %s <HOST> <PORT>' % sys.argv[0])
+        print('Example: %s 137.113.118.3 20000' % sys.argv[0])
+        exit(1)
 
-sys.stdout.write('Waiting for client to connect ...')
-sys.stdout.flush()
+    host = sys.argv[1]
+    port = int(sys.argv[2])
 
-client, address = sock.accept()
-
-print('Accepted connection')
-
-while True:
-
-    msg = input('> ').encode('utf-8')  # Python3 requires encoding
-
-    if len(msg) < 1:
-        break
+    sock = socket.socket()
 
     try:
-        client.send(msg)
-    except:
-        print('Failed to transmit')
-        break
+        sock.bind((host, port)) # Note tuple!
+    except socket.error:
+        print('bind() failed with code ' + str(msg[0]) + ': ' + msg[1])
 
-client.close()
-sock.close
+    sock.listen(1) # handle up to 1 back-logged connection
+
+    sys.stdout.write('Waiting for client to connect ...')
+    sys.stdout.flush()
+
+    client, address = sock.accept()
+
+    print('Accepted connection')
+
+    while True:
+
+        msg = input('> ').encode('utf-8')  # Python3 requires encoding
+
+        if len(msg) < 1:                   # Simple way of quitting on CTRL-C
+            break
+
+        try:
+            client.send(msg)
+
+        except:
+            print('Failed to transmit')
+            break
+
+    client.close()
+    sock.close

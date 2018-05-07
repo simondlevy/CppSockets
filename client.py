@@ -2,7 +2,7 @@
 '''
 client.py
 
-Simple Python socket client example
+Simple Python socket client example with threading
 
 Copyright Simon D. Levy 2018
 
@@ -11,36 +11,47 @@ MIT License
 
 import socket
 import sys
+import threading
 
-if len(sys.argv) < 3:
-    print('Usage:   %s <HOST> <PORT>' % sys.argv[0])
-    print('Example: %s 137.113.118.3 20000' % sys.argv[0])
-    exit(1)
+def talk(sock):
 
-host = sys.argv[1]
-port = int(sys.argv[2])
+    return
 
-sock = socket.socket()
+if __name__ == '__main__':
 
-try:
-    sock.connect((host, port)) # Note tuple!
-except socket.error: 
-    print('connect() failed with code ' + str(msg[0]) + ': ' + msg[1])
-    exit(1)
+    if len(sys.argv) < 3:
+        print('Usage:   %s <HOST> <PORT>' % sys.argv[0])
+        print('Example: %s 137.113.118.3 20000' % sys.argv[0])
+        exit(1)
 
-print('Connected to server %s:%d' % (host, port))
+    host = sys.argv[1]
+    port = int(sys.argv[2])
 
-while True:
+    sock = socket.socket()
 
     try:
-        msg = sock.recv(80) # Maximum number of bytes we expect
-    except:
-        print('Failed to receive')
-        break
+        sock.connect((host, port)) # Note tuple!
+    except socket.error: 
+        print('connect() failed with code ' + str(msg[0]) + ': ' + msg[1])
+        exit(1)
 
-    if len(msg) < 1:
-        break
+    print('Connected to server %s:%d' % (host, port))
 
-    print(msg.decode('utf-8')) # Python 3 requires decoding
+    thread = threading.Thread(target = talk, args = (sock,))
+    thread.daemon = True
+    thread.start()
 
-sock.close()
+    while True:
+
+        try:
+            msg = sock.recv(80) # Maximum number of bytes we expect
+        except:
+            print('Failed to receive')
+            break
+
+        if len(msg) < 1:
+            break
+
+        print(msg.decode('utf-8')) # Python 3 requires decoding
+
+    sock.close()
