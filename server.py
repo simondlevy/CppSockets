@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     while True:
 
-        msg = input('> ').encode('utf-8')  # Python3 requires encoding
+        msg = input().encode('utf-8')  # Python3 requires encoding
 
         if len(msg) < 1:                   # Simple way of quitting on CTRL-C
             break
