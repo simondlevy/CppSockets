@@ -15,7 +15,19 @@ import threading
 
 def talk(sock):
 
-    return
+    while True:
+
+        msg = input('> ').encode('utf-8')  # Python3 requires encoding
+
+        if len(msg) < 1:                   # Simple way of quitting on CTRL-C
+            break
+
+        try:
+            sock.send(msg)
+
+        except:
+            break
+
 
 if __name__ == '__main__':
 

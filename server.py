@@ -14,9 +14,21 @@ import sys
 import threading
 
 
-def talk(sock):
+def talk(client):
 
-    return
+    while True:
+
+        try:
+            msg = client.recv(80) # Maximum number of bytes we expect
+        except:
+            print('Failed to receive')
+            break
+
+        if len(msg) < 1:
+            break
+
+        print('Client said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+
 
 if __name__ == '__main__':
 
@@ -45,7 +57,7 @@ if __name__ == '__main__':
 
     print('Accepted connection')
 
-    thread = threading.Thread(target = talk, args = (sock,))
+    thread = threading.Thread(target = talk, args = (client,))
     thread.daemon = True
     thread.start()
 
