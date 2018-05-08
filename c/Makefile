@@ -7,10 +7,22 @@
 
 all: client server
 
-client: client.c
-	gcc -o client client.c
+client: client.o sockettome.o
+	gcc -o client client.o sockettome.o
 
-server: server.c
-	gcc -o server server.c
+server: server.o sockettome.o
+	gcc -o server server.o sockettome.o
+
+client.o: client.c sockettome.h
+	gcc -Wall -c client.c
+
+server.o: server.c sockettome.h
+	gcc -Wall -c server.c
+
+sockettome.o: sockettome.c sockettome.h
+	gcc -Wall -c sockettome.c
+
+clean:
+	rm -f client server *.o *~
 
 

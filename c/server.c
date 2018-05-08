@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 
+#include "sockettome.h"
+
 int main(int argc, char ** argv)
 {
     if (argc < 3) {
