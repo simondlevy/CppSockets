@@ -57,21 +57,16 @@ if __name__ == '__main__':
     thread.daemon = True
     thread.start()
 
-    messages = ['one', 'two', 'three', 'four', 'five']
-    messageId = 0
-
     while True:
 
+        message = input('> ')
+
         try:
-            client.send(messages[messageId].encode('utf-8'))
+            client.send(message.encode('utf-8'))
 
         except socket.error:
             print('Failed to transmit')
             break
   
-        messageId = (messageId + 1) % len(messages)
-
-        time.sleep(1)
-
     client.close()
     sock.close
