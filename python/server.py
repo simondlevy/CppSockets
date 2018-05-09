@@ -11,7 +11,6 @@ MIT License
 
 import socket
 import threading
-import time
 import sys
 
 from hostport import hostport
