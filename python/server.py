@@ -37,6 +37,8 @@ if __name__ == '__main__':
 
     sock = socket.socket()
 
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
     try:
         sock.bind((host, port)) # Note tuple!
     except socket.error:
