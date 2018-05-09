@@ -44,7 +44,12 @@ if __name__ == '__main__':
 
                 try:
                     msg = sock.recv(80) # Maximum number of bytes we expect
-                    print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+                    if len(msg) < 1:
+                        sock.close()
+                        sock = socket.socket()
+                        connected = False
+                    else:
+                        print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
 
                 except:
                     continue
