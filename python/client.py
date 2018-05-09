@@ -10,7 +10,6 @@ MIT License
 '''
 
 import socket
-import sys
 import time
 import fcntl
 import os
@@ -26,7 +25,7 @@ if __name__ == '__main__':
     try:
         sock.connect((host, port)) # Note tuple!
     except socket.error: 
-        print('connect() failed with code ' + str(msg[0]) + ': ' + msg[1])
+        print('connect() failed')
         exit(1)
 
     fcntl.fcntl(sock, fcntl.F_SETFL, os.O_NONBLOCK)
