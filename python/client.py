@@ -11,26 +11,9 @@ MIT License
 
 import socket
 import sys
-import threading
 import time
-
-def talk(sock):
-
-    messages = ['one', 'two', 'three', 'four', 'five']
-    messageId = 0
-
-    while True:
-
-        try:
-            sock.send(messages[messageId].encode('utf-8'))
-
-        except socket.error:
-            break
-
-        messageId = (messageId + 1) % len(messages)
-
-        time.sleep(1)
-
+import fcntl
+import os
 
 if __name__ == '__main__':
 
@@ -50,23 +33,38 @@ if __name__ == '__main__':
         print('connect() failed with code ' + str(msg[0]) + ': ' + msg[1])
         exit(1)
 
+    fcntl.fcntl(sock, fcntl.F_SETFL, os.O_NONBLOCK)
+
     print('Connected to server %s:%d' % (host, port))
 
-    thread = threading.Thread(target = talk, args = (sock,))
-    thread.daemon = True
-    thread.start()
+    start = time.time()
+    prev = start
+
+    messages = ['one', 'two', 'three', 'four', 'five']
+    messageId = 0
 
     while True:
 
         try:
             msg = sock.recv(80) # Maximum number of bytes we expect
+            print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+
         except:
-            print('Failed to receive')
-            break
+            continue
 
-        if len(msg) < 1:
-            break
+        curr = time.time()
 
-        print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+        if curr - prev > 1:
+
+            prev = curr
+
+            try:
+                sock.send(messages[messageId].encode('utf-8'))
+
+            except socket.error:
+                break
+
+        messageId = (messageId + 1) % len(messages)
+
 
     sock.close()
