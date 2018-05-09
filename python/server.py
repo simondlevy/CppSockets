@@ -12,7 +12,7 @@ MIT License
 import socket
 import sys
 import threading
-
+import time
 
 def talk(client):
 
@@ -61,19 +61,21 @@ if __name__ == '__main__':
     thread.daemon = True
     thread.start()
 
+    messages = ['one', 'two', 'three', 'four', 'five']
+    messageId = 0
+
     while True:
 
-        msg = input().encode('utf-8')  # Python3 requires encoding
-
-        if len(msg) < 1:                   # Simple way of quitting on CTRL-C
-            break
-
         try:
-            client.send(msg)
+            client.send(messages[messageId].encode('utf-8'))
 
-        except:
+        except socket.error:
             print('Failed to transmit')
             break
+  
+        messageId = (messageId + 1) % len(messages)
+
+        time.sleep(1)
 
     client.close()
     sock.close
