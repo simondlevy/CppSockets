@@ -12,21 +12,24 @@ MIT License
 import socket
 import sys
 import threading
+import time
 
 def talk(sock):
 
+    messages = ['one', 'two', 'three', 'four', 'five']
+    messageId = 0
+
     while True:
 
-        msg = input().encode('utf-8')  # Python3 requires encoding
-
-        if len(msg) < 1:                   # Simple way of quitting on CTRL-C
-            break
-
         try:
-            sock.send(msg)
+            sock.send(messages[messageId].encode('utf-8'))
 
-        except:
+        except socket.error:
             break
+
+        messageId = (messageId + 1) % len(messages)
+
+        time.sleep(1)
 
 
 if __name__ == '__main__':
