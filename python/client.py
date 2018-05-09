@@ -15,15 +15,11 @@ import time
 import fcntl
 import os
 
+from hostport import hostport
+
 if __name__ == '__main__':
 
-    if len(sys.argv) < 3:
-        print('Usage:   %s <HOST> <PORT>' % sys.argv[0])
-        print('Example: %s 137.113.118.3 20000' % sys.argv[0])
-        exit(1)
-
-    host = sys.argv[1]
-    port = int(sys.argv[2])
+    host, port = hostport()
 
     sock = socket.socket()
 
