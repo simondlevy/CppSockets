@@ -10,8 +10,9 @@ MIT License
 '''
 
 import socket
-import threading
-import sys
+from threading import Thread
+from sys import stdout
+from time import sleep
 
 from hostport import hostport
 
@@ -30,7 +31,6 @@ def talk(client):
 
         print('Client said: ' + msg.decode('utf-8')) # Python 3 requires decoding
 
-
 if __name__ == '__main__':
 
     host, port = hostport()
@@ -47,20 +47,22 @@ if __name__ == '__main__':
 
     sock.listen(1) # handle up to 1 back-logged connection
 
-    sys.stdout.write('Waiting for client to connect ...')
-    sys.stdout.flush()
+    stdout.write('Waiting for client to connect ...')
+    stdout.flush()
 
     client, address = sock.accept()
 
     print('Accepted connection')
 
-    thread = threading.Thread(target = talk, args = (client,))
+    thread = Thread(target = talk, args = (client,))
     thread.daemon = True
     thread.start()
 
     while True:
 
-        message = input('> ')
+        stdout.write('> ')
+        stdout.flush()
+        message = input()
 
         try:
             client.send(message.encode('utf-8'))
@@ -68,6 +70,8 @@ if __name__ == '__main__':
         except socket.error:
             print('Failed to transmit')
             break
+
+        sleep(1)
   
     client.close()
     sock.close
