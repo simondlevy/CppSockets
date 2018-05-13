@@ -53,6 +53,7 @@ int main(int argc, char ** argv)
             }
 
             else if (fin == 0) {
+
                 printf("Connected!\n");
                 int flags = fcntl(sockfd, F_GETFL, 0);
                 fcntl(sockfd, F_SETFL, flags|O_NONBLOCK);
