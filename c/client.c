@@ -1,6 +1,6 @@
 /*
 
-   Example client program for sockets
+   Example client program for sockets.  
 
    Adapted from http://web.eecs.utk.edu/~huangj/cs360/360/notes/Sockets/socketfun.c
  */
@@ -14,14 +14,17 @@
 
 int main(int argc, char ** argv)
 {
-    if (argc < 3) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage:   %s <PORT>\n", argv[0]);
         fprintf(stderr, "Usage:   %s <HOST> <PORT>\n", argv[0]);
+        fprintf(stderr, "Example: %s 20000\n", argv[0]);
         fprintf(stderr, "Example: %s 137.113.118.3 20000\n", argv[0]);
         exit(1);
     }
 
-    char * hn = argv[1];
-    int port = atoi(argv[2]);
+    char * hn = (argc > 2) ? argv[1] : "localhost";
+    int port = atoi(argc > 2 ? argv[2] : argv[1]);
+
     char * un = getenv("USER");
 
     // true = retry till success
