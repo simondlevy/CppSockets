@@ -14,7 +14,7 @@
 int main(int argc, char ** argv)
 {
     if (argc < 2) {
-        fprintf(stderr, "Usage:   %s <HOST>\n", argv[0]);
+        fprintf(stderr, "Usage:   %s <PORT>\n", argv[0]);
         fprintf(stderr, "Example: %s 20000\n", argv[0]);
         exit(1);
     }
