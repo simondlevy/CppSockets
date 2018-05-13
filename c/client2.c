@@ -74,10 +74,10 @@ int main(int argc, char ** argv)
                 char s[80];
                 if (fgets(s, 80, fin) != NULL) {
                     printf("Server said: %s\n", s);
+                    fprintf(fout, "%s", messages[messageId]);
+                    fflush(fout);
+                    messageId = (messageId + 1) % NMESSAGES;
                 }
-
-                fprintf(fout, "%s\n", messages[messageId]);
-                messageId = (messageId + 1) % NMESSAGES;
             }
 
             prevtime = currtime;
