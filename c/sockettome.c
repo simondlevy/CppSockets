@@ -61,7 +61,7 @@ int accept_connection(int s)
     return x;
 }
 
-int request_connection(char *hn, int port, bool block)
+int request_connection(char *hn, int port, bool retry)
 {
     struct hostent *he;
     if (!(he = gethostbyname(hn))) {
@@ -88,7 +88,7 @@ int request_connection(char *hn, int port, bool block)
 
             s = 0;
 
-            if (block) {
+            if (retry) {
                 sleep (1); 
                 perror("connect():"); 
             }

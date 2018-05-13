@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
     int port = atoi(argv[2]);
     char * un = getenv("USER");
 
-    // true = blocking
+    // true = retry till success
     int fd = request_connection(hn, port, true);
 
     printf("Connection established.  Receiving:\n\n");

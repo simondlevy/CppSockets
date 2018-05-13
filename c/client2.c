@@ -46,11 +46,14 @@ int main(int argc, char ** argv)
             // not connected; keep trying
             if (sockfd == 0) {
 
-                // false = non-blocking
+                printf("Attempting connection to server %s:%d\n", hn, port);
+
+                // false = no retry
                 sockfd = request_connection(hn, port, false);
             }
 
             else if (fin == 0) {
+                printf("Connected!\n");
                 int flags = fcntl(sockfd, F_GETFL, 0);
                 fcntl(sockfd, F_SETFL, flags|O_NONBLOCK);
                 fin  = fdopen(sockfd, "r");
