@@ -15,7 +15,12 @@
 
 #include "sockettome.h"
 
+#define NMESSAGES 5
+
 static const float RATE = 1.0; // updates per second
+
+static char * messages[NMESSAGES] = {"one", "two", "three", "four", "five"};
+static int  messageId = 0;
 
 int main(int argc, char ** argv)
 {
@@ -35,7 +40,7 @@ int main(int argc, char ** argv)
     int sockfd = 0;
 
     FILE * fin = NULL;
-    //FILE * fout = NULL;
+    FILE * fout = NULL;
 
     while (true) {
 
@@ -60,7 +65,7 @@ int main(int argc, char ** argv)
                 int flags = fcntl(sockfd, F_GETFL, 0);
                 fcntl(sockfd, F_SETFL, flags|O_NONBLOCK);
                 fin  = fdopen(sockfd, "r");
-                //fout = fdopen(sockfd, "w");
+                fout = fdopen(sockfd, "w");
             }
 
             // connected
@@ -70,6 +75,9 @@ int main(int argc, char ** argv)
                 if (fgets(s, 80, fin) != NULL) {
                     printf("Server said: %s\n", s);
                 }
+
+                fprintf(fout, "%s\n", messages[messageId]);
+                messageId = (messageId + 1) % NMESSAGES;
             }
 
             prevtime = currtime;
