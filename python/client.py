@@ -9,7 +9,7 @@ Copyright Simon D. Levy 2018
 MIT License
 '''
 
-RATE = 1
+RATE = 1 # Update frequency in Herz 
 
 import socket
 import time
