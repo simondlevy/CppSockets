@@ -5,10 +5,13 @@
 # 
 # MIT License
 
-all: client server
+all: client server client2
 
 client: client.o sockettome.o
 	gcc -o client client.o sockettome.o
+
+client: client2.o sockettome.o
+	gcc -o client2 client2.o sockettome.o
 
 server: server.o sockettome.o
 	gcc -o server server.o sockettome.o
