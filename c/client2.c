@@ -26,11 +26,8 @@ int main(int argc, char ** argv)
 
     char * hn = argv[1];
     int port = atoi(argv[2]);
-    char * un = getenv("USER");
 
     float prevtime = 0;
-
-    int tick = 0;
 
     while (true) {
 
@@ -40,7 +37,10 @@ int main(int argc, char ** argv)
 
         if ((currtime - prevtime) > 1./RATE) {
 
-            printf("tick %d\n", tick++);
+            // false = non-blocking
+            int fd = request_connection(hn, port, false);
+
+            printf("%d\n", fd);
 
             prevtime = currtime;
         }

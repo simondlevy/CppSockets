@@ -61,7 +61,7 @@ int accept_connection(int s)
     return x;
 }
 
-int request_connection(char *hn, int port)
+int request_connection(char *hn, int port, bool block)
 {
     struct hostent *he;
     if (!(he = gethostbyname(hn))) {
@@ -69,7 +69,7 @@ int request_connection(char *hn, int port)
         exit(1);
     } 
 
-    int s = -1;
+    int s = 0;
 
     while (true) {
 
@@ -85,8 +85,17 @@ int request_connection(char *hn, int port)
         }
 
         if (connect(s, (struct sockaddr*)&sn, sizeof(sn)) == -1) {
-            sleep (1); 
-            perror("connect():"); 
+
+            s = 0;
+
+            if (block) {
+                sleep (1); 
+                perror("connect():"); 
+            }
+
+            else {
+                return 0;
+            }
         }
 
         else {

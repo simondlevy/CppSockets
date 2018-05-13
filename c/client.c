@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <sys/socket.h>
 
 #include "sockettome.h"
@@ -23,7 +24,8 @@ int main(int argc, char ** argv)
     int port = atoi(argv[2]);
     char * un = getenv("USER");
 
-    int fd = request_connection(hn, port);
+    // true = blocking
+    int fd = request_connection(hn, port, true);
 
     printf("Connection established.  Receiving:\n\n");
 
