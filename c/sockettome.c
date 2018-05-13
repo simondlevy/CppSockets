@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include <signal.h>
 #include <strings.h>
+#include <stdbool.h>
 
 #include "sockettome.h"
 
@@ -62,16 +63,17 @@ int accept_connection(int s)
 
 int request_connection(char *hn, int port)
 {
-    struct sockaddr_in sn;
-    int s, ok;
     struct hostent *he;
-
     if (!(he = gethostbyname(hn))) {
         puts("can't gethostname");
         exit(1);
     } 
-    ok = 0;
-    while (!ok) {
+
+    int s = -1;
+
+    while (true) {
+
+        struct sockaddr_in sn;
         bzero((char *)&sn,sizeof(sn));
         sn.sin_family = AF_INET;
         sn.sin_port  = htons((short)port);
@@ -81,8 +83,16 @@ int request_connection(char *hn, int port)
             perror("socket()");
             exit(1);
         }
-        ok = (connect(s, (struct sockaddr*)&sn, sizeof(sn)) != -1);
-        if (!ok) { sleep (1); perror("connect():"); }
+
+        if (connect(s, (struct sockaddr*)&sn, sizeof(sn)) == -1) {
+            sleep (1); 
+            perror("connect():"); 
+        }
+
+        else {
+            break;
+        }
     }
+
     return s;
 }
