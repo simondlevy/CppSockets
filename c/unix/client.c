@@ -3,7 +3,11 @@
    Example client program for sockets.  
 
    Adapted from http://web.eecs.utk.edu/~huangj/cs360/360/notes/Sockets/socketfun.c
- */
+ 
+   Copyright Simon D. Levy 2018
+
+   MIT License
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
