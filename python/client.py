@@ -32,23 +32,26 @@ if __name__ == '__main__':
     except socket.error: 
         print('Failed')
 
-    message = "I am the client!"
-    print('Sending %s to server' % message)
+    while True:
 
-    try:
-        sock.send(message.encode('utf-8'))
-    except socket.error:
-        print('Failed to send')
+        message = input('> ')
 
-    try:
-        msg = sock.recv(80) # Maximum number of bytes we expect
-        if len(msg) < 1:
-            sock.close()
-            sock = socket.socket()
-            connected = False
-        else:
-            print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
-            received = True
+        print('Sending %s to server' % message)
 
-    except:
-        print('Failed to receive')
+        try:
+            sock.send(message.encode('utf-8'))
+        except socket.error:
+            print('Failed to send')
+
+        try:
+            msg = sock.recv(80) # Maximum number of bytes we expect
+            if len(msg) < 1:
+                sock.close()
+                sock = socket.socket()
+                connected = False
+            else:
+                print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+                received = True
+
+        except:
+            print('Failed to receive')
