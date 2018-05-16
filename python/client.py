@@ -12,9 +12,6 @@ MIT License
 RATE = 1 # Update frequency in Herz 
 
 import socket
-import time
-import os
-from sys import stdout
 
 from hostport import hostport
 
@@ -41,4 +38,17 @@ if __name__ == '__main__':
     try:
         sock.send(message.encode('utf-8'))
     except socket.error:
-        print('Failed')
+        print('Failed to send')
+
+    try:
+        msg = sock.recv(80) # Maximum number of bytes we expect
+        if len(msg) < 1:
+            sock.close()
+            sock = socket.socket()
+            connected = False
+        else:
+            print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
+            received = True
+
+    except:
+        print('Failed to receive')
