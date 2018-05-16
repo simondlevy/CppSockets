@@ -49,10 +49,12 @@ static void error(const char * fmt, ...)
 class SocketClient {
 
 
-    public:
+    private:
 
         SOCKET _sock; 
         bool _ready;
+
+    public:
 
         SocketClient(void)
         {
@@ -165,7 +167,8 @@ class SocketClient {
 
         }
 
-};
+}; // class SocketClient
+
 
 int __cdecl main(int argc, char **argv)
 {
@@ -173,7 +176,6 @@ int __cdecl main(int argc, char **argv)
     SocketClient client;
 
     float prevtime = 0;
-
 
     while (true) {
 
