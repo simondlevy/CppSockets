@@ -27,22 +27,18 @@ if __name__ == '__main__':
 
     sock = socket.socket()
 
-    connected = False
+    print('Attempting to connect to server %s:%d' % (host, port))
 
+    try:
+        sock.connect((host, port)) # Note tuple!
+        connected = True
+        print('Connected!')
+    except socket.error: 
+        print('Failed')
+
+    '''
     start = time.time()
     prev = start
-
-    while True:
-
-        curr = time.time()
-
-        if curr - prev > 1./RATE:
-
-            prev = curr
-
-            if connected:
-
-                received = False
 
                 try:
                     msg = sock.recv(80) # Maximum number of bytes we expect
@@ -65,14 +61,6 @@ if __name__ == '__main__':
 
             else:
 
-                print('Attempting to connect to server %s:%d' % (host, port))
-
-                try:
-                    sock.connect((host, port)) # Note tuple!
-                    connected = True
-                    print('Connected!')
-                except socket.error: 
-                    continue
-
 
     sock.close()
+    '''
