@@ -153,13 +153,16 @@ class SocketClient {
                     error("socket failed with error: %ld\n", WSAGetLastError());
                 }
 
-                // Connect to server.
+                //setNonblocking();
+
+                // Connect to server
                 iResult = connect(_sock, ptr->ai_addr, (int)ptr->ai_addrlen);
                 if (iResult == SOCKET_ERROR) {
                     closesocket(_sock);
                     _sock = INVALID_SOCKET;
                     continue;
                 }
+
                 break;
             }
 
