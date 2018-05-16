@@ -3,11 +3,11 @@
    Example client program for sockets.  
 
    Adapted from https://msdn.microsoft.com/en-us/library/windows/desktop/ms737591(v=vs.85).aspx
- 
+
    Copyright Simon D. Levy 2018
 
    MIT License
-*/
+ */
 
 #include "stdafx.h"
 
@@ -35,65 +35,14 @@ static const float RATE = 1.0; // updates per second
 
 static void error(const char * fmt, ...)
 {
-	va_list ap;
-	va_start(ap, fmt);
-	char buf[200];
-	vsnprintf(buf, 200, fmt, ap);
-	puts(buf);
-	va_end(ap);
+    va_list ap;
+    va_start(ap, fmt);
+    char buf[200];
+    vsnprintf(buf, 200, fmt, ap);
+    puts(buf);
+    va_end(ap);
 
-	while (true);
-}
-
-static SOCKET connect(void)
-{
-	SOCKET sock = INVALID_SOCKET;
-
-	// Initialize Winsock
-	WSADATA wsaData;
-	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != 0) {
-		error("WSAStartup failed with error: %d\n", iResult);
-	}
-
-	struct addrinfo hints;
-	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-
-	// Resolve the server address and port
-	struct addrinfo *result = NULL;
-	iResult = getaddrinfo(HOST, PORT, &hints, &result);
-	if (iResult != 0) {
-		WSACleanup();
-		error("getaddrinfo failed with error: %d\n", iResult);
-	}
-
-	// Attempt to connect to an address until one succeeds
-	for (struct addrinfo * ptr = result; ptr != NULL; ptr = ptr->ai_next) {
-
-		// Create a SOCKET for connecting to server
-		sock = socket(ptr->ai_family, ptr->ai_socktype,
-			ptr->ai_protocol);
-		if (sock == INVALID_SOCKET) {
-			WSACleanup();
-			error("socket failed with error: %ld\n", WSAGetLastError());
-		}
-
-		// Connect to server.
-		iResult = connect(sock, ptr->ai_addr, (int)ptr->ai_addrlen);
-		if (iResult == SOCKET_ERROR) {
-			closesocket(sock);
-			sock = INVALID_SOCKET;
-			continue;
-		}
-		break;
-	}
-
-	freeaddrinfo(result);
-
-	return sock;
+    while (true);
 }
 
 
@@ -102,7 +51,63 @@ class SocketClient {
 
     public:
 
-        SOCKET _sock;
+        SOCKET _sock; 
+        bool _ready;
+
+        SocketClient(void)
+        {
+            _sock = INVALID_SOCKET;
+            _ready = false;
+        }
+
+        void tryConnect(void)
+        {
+            _sock = INVALID_SOCKET;
+
+            // Initialize Winsock
+            WSADATA wsaData;
+            int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+            if (iResult != 0) {
+                error("WSAStartup failed with error: %d\n", iResult);
+            }
+
+            struct addrinfo hints;
+            ZeroMemory(&hints, sizeof(hints));
+            hints.ai_family = AF_UNSPEC;
+            hints.ai_socktype = SOCK_STREAM;
+            hints.ai_protocol = IPPROTO_TCP;
+
+            // Resolve the server address and port
+            struct addrinfo *result = NULL;
+            iResult = getaddrinfo(HOST, PORT, &hints, &result);
+            if (iResult != 0) {
+                WSACleanup();
+                error("getaddrinfo failed with error: %d\n", iResult);
+            }
+
+            // Attempt to connect to an address until one succeeds
+            for (struct addrinfo * ptr = result; ptr != NULL; ptr = ptr->ai_next) {
+
+                // Create a SOCKET for connecting to server
+                _sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+                if (_sock == INVALID_SOCKET) {
+                    WSACleanup();
+                    error("socket failed with error: %ld\n", WSAGetLastError());
+                }
+
+                // Connect to server.
+                iResult = connect(_sock, ptr->ai_addr, (int)ptr->ai_addrlen);
+                if (iResult == SOCKET_ERROR) {
+                    closesocket(_sock);
+                    _sock = INVALID_SOCKET;
+                    continue;
+                }
+                break;
+            }
+
+            freeaddrinfo(result);
+
+        }
 
 };
 
@@ -111,9 +116,6 @@ int __cdecl main(int argc, char **argv)
 
     SocketClient client;
 
-    client._sock = INVALID_SOCKET;
-
-    bool ready = false;
     float prevtime = 0;
 
 
@@ -132,10 +134,10 @@ int __cdecl main(int argc, char **argv)
 
                 printf("Attempting connection to server %s:%s\n", HOST, PORT);
 
-                client._sock = connect();
+                client.tryConnect();
             }
 
-            else if (!ready) {
+            else if (!client._ready) {
                 printf("Connected!\n");
                 unsigned long iMode = 1; // non-blocking
                 int iResult = ioctlsocket(client._sock, FIONBIO, &iMode);
@@ -143,7 +145,7 @@ int __cdecl main(int argc, char **argv)
                     error("ioctlsocket failed with error: %ld\n", iResult);
                 }
                 else {
-                    ready = true;
+                    client._ready = true;
                 }
             }
 
