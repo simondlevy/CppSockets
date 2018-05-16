@@ -13,6 +13,7 @@ RATE = 1 # Update frequency in Herz
 
 import socket
 import time
+import fcntl
 import os
 from sys import stdout
 
@@ -69,6 +70,7 @@ if __name__ == '__main__':
 
                 try:
                     sock.connect((host, port)) # Note tuple!
+                    fcntl.fcntl(sock, fcntl.F_SETFL, os.O_NONBLOCK)
                     connected = True
                     print('Connected!')
                 except socket.error: 
