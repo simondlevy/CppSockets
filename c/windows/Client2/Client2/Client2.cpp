@@ -60,6 +60,29 @@ class SocketClient {
             _ready = false;
         }
 
+        bool connected(void)
+        {
+            return _sock != INVALID_SOCKET;
+        }
+
+        bool ready(void)
+        {
+            return _ready;
+        }
+
+        void setNonblocking(void)
+        {
+
+            unsigned long iMode = 1; // non-blocking
+            int iResult = ioctlsocket(_sock, FIONBIO, &iMode);
+            if (iResult != NO_ERROR) {
+                error("ioctlsocket failed with error: %ld\n", iResult);
+            }
+            else {
+                _ready = true;
+            }
+        }
+
         void tryConnect(void)
         {
             _sock = INVALID_SOCKET;
@@ -130,23 +153,18 @@ int __cdecl main(int argc, char **argv)
             prevtime = currtime;
 
             // not connected; keep trying
-            if (client._sock == INVALID_SOCKET) {
+            if (!client.connected()) {
 
                 printf("Attempting connection to server %s:%s\n", HOST, PORT);
 
                 client.tryConnect();
             }
 
-            else if (!client._ready) {
+            else if (!client.ready()) {
+
                 printf("Connected!\n");
-                unsigned long iMode = 1; // non-blocking
-                int iResult = ioctlsocket(client._sock, FIONBIO, &iMode);
-                if (iResult != NO_ERROR) {
-                    error("ioctlsocket failed with error: %ld\n", iResult);
-                }
-                else {
-                    client._ready = true;
-                }
+
+                client.setNonblocking();
             }
 
             else {
