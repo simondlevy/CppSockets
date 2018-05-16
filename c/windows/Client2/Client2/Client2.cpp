@@ -207,8 +207,6 @@ int __cdecl main(int argc, char **argv)
         WSACleanup();
         error("shutdown failed with error: %d\n", WSAGetLastError());
     }
-    closesocket(client._sock);
-    WSACleanup();
 
     return 0;
 }
