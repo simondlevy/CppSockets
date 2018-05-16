@@ -31,36 +31,14 @@ if __name__ == '__main__':
 
     try:
         sock.connect((host, port)) # Note tuple!
-        connected = True
         print('Connected!')
     except socket.error: 
         print('Failed')
 
-    '''
-    start = time.time()
-    prev = start
+    message = "I am the client!"
+    print('Sending %s to server' % message)
 
-                try:
-                    msg = sock.recv(80) # Maximum number of bytes we expect
-                    if len(msg) < 1:
-                        sock.close()
-                        sock = socket.socket()
-                        connected = False
-                    else:
-                        print('Server said: ' + msg.decode('utf-8')) # Python 3 requires decoding
-                        received = True
-
-                except:
-                    continue
-
-                if received:
-                    message = messages[messageId]
-                    print('Sending %s to server' % message)
-                    sock.send(message.encode('utf-8'))
-                    messageId = (messageId + 1) % len(messages)
-
-            else:
-
-
-    sock.close()
-    '''
+    try:
+        sock.send(message.encode('utf-8'))
+    except socket.error:
+        print('Failed')
