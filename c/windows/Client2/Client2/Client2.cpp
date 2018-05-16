@@ -107,6 +107,15 @@ class SocketClient {
             return true;
         }
 
+        void close(void)
+        {
+            if (shutdown(_sock, SD_SEND) == SOCKET_ERROR) {
+                closesocket(_sock);
+                WSACleanup();
+                error("shutdown failed with error: %d\n", WSAGetLastError());
+            }
+        }
+
         void tryConnect(void)
         {
             _sock = INVALID_SOCKET;
@@ -202,11 +211,6 @@ int __cdecl main(int argc, char **argv)
     }
 
     // cleanup
-    if (shutdown(client._sock, SD_SEND) == SOCKET_ERROR) {
-        closesocket(client._sock);
-        WSACleanup();
-        error("shutdown failed with error: %d\n", WSAGetLastError());
-    }
-
+    client.close();
     return 0;
 }
