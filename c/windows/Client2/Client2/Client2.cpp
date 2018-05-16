@@ -83,6 +83,30 @@ class SocketClient {
             }
         }
 
+        bool talk(void)
+        {
+            char s[BUFLEN] = "";
+
+            if (recv(_sock, s, BUFLEN, 0) > 0) {
+
+                printf("Server said: %s\n", s);
+
+                strcat_s(s, " is what you said!");
+                if (send(_sock, s, (int)strlen(s), 0) == SOCKET_ERROR) {
+                    closesocket(_sock);
+                    WSACleanup();
+                    error("send failed with error: %d\n", WSAGetLastError());
+                }
+            }
+
+            // Server exited
+            else if (WSAGetLastError() == WSAECONNRESET) {
+                return false;
+            }
+
+            return true;
+        }
+
         void tryConnect(void)
         {
             _sock = INVALID_SOCKET;
@@ -169,22 +193,7 @@ int __cdecl main(int argc, char **argv)
 
             else {
 
-                char s[BUFLEN] = "";
-
-                if (recv(client._sock, s, BUFLEN, 0) > 0) {
-
-                    printf("Server said: %s\n", s);
-
-                    strcat_s(s, " is what you said!");
-                    if (send(client._sock, s, (int)strlen(s), 0) == SOCKET_ERROR) {
-                        closesocket(client._sock);
-                        WSACleanup();
-                        error("send failed with error: %d\n", WSAGetLastError());
-                    }
-                }
-
-                // Server exited
-                else if (WSAGetLastError() == WSAECONNRESET) {
+                if (!client.talk()) {
                     break;
                 }
 
