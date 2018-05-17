@@ -17,7 +17,7 @@ server: server.o sockettome.o
 	gcc -o server server.o sockettome.o
 
 server2: server2.o sockettome.o
-	gcc -o server server2.o sockettome.o
+	gcc -o server2 server2.o sockettome.o
 
 client.o: client.c sockettome.h
 	gcc -Wall -c client.c
@@ -33,6 +33,9 @@ server2.o: server2.c sockettome.h
 
 sockettome.o: sockettome.c sockettome.h
 	gcc -Wall -c sockettome.c
+
+serve2: server2
+	./server2 20000
 
 clean:
 	rm -f client server *.o *~

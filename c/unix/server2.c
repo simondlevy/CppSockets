@@ -1,6 +1,6 @@
 /*
 
-   Example server program for sockets
+   Example threaded server program for sockets
  */
 
 #include <stdio.h>
@@ -25,29 +25,25 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    // Serve the socket and accept the connection.
-
+    // Serve the socket 
     int sock = serve_socket(port);
+
+    // Wait for a connection
+    printf("Waiting for a client ...");
     int fd = accept_connection(sock);
 
     // Send the username along the socket.
 
-    char * un = getenv("USER");
-    printf("Connection established.  Sending `Server: %s'\n", un);
-    char s[100];
-    sprintf(s, "Server: %s\n", un);
-    write(fd, s, strlen(s));
+    printf(" Connected!\n");
 
-    // Read a line of text, one character at a time.
-    printf("Receiving:\n\n");
-    char c = 0;
-    do {
-        if (read(fd, &c, 1) != 1) {
-            printf("Socket Closed Prematurely\n");
-            exit(0);
-        } else putchar(c);
-    } while (c != '\n');
+    while (1) {
 
+        char buf[80] = "";
+        read(fd, buf, 80);
+        printf("Client said: %s\n", buf);
+        strcpy(buf, "reply");
+        write(fd, buf, strlen(buf));
+    }
 
     return 0;
 }
