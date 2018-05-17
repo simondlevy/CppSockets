@@ -15,16 +15,21 @@
 
 static const float RATE = 1.0; // updates per second
 
-// XXX should pass these to threadfunc
-static int fd;
-static int sock;
+typedef struct {
+
+    int fd;
+    int sock;
+
+} socket_info_t;
 
 void * threadfunc(void * arg)
 {
+    socket_info_t * sockinfo = (socket_info_t *)arg;
+
     // Wait for a connection
     printf("Waiting for a client ...");
     fflush(stdout);
-    fd = accept_connection(sock);
+    sockinfo->fd = accept_connection(sockinfo->sock);
     printf(" Connected!\n");
 
     return NULL;
@@ -45,23 +50,24 @@ int main(int argc, char ** argv)
     }
 
     pthread_t tcb;
+    socket_info_t sockinfo;
 
     // Serve the socket 
-    sock = serve_socket(port);
+    sockinfo.sock = serve_socket(port);
 
-    if (pthread_create(&tcb, NULL, threadfunc, NULL) != 0) {
+    if (pthread_create(&tcb, NULL, threadfunc, &sockinfo) != 0) {
         perror("pthread_create");
     }
 
     // Loop forever, receiving messages from the client and sending them back
     while (true) {
 
-        if (fd > 0) {
+        if (sockinfo.fd > 0) {
             char buf[80] = "";
-            read(fd, buf, 80);
+            read(sockinfo.fd, buf, 80);
             printf("Client said: %s\n", buf);
             strcpy(buf, "reply");
-            write(fd, buf, strlen(buf));
+            write(sockinfo.fd, buf, strlen(buf));
         }
     }
 
