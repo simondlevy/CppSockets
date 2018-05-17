@@ -5,11 +5,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
 #include <unistd.h>
+#include <string.h>
+#include <pthread.h>
 
 #include "sockettome.h"
+
+void * threadfunc(void * arg)
+{
+    return NULL;
+}
 
 int main(int argc, char ** argv)
 {
@@ -25,17 +30,27 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
+    pthread_t tcb;
+
+    if (pthread_create(&tcb, NULL, threadfunc, NULL) != 0) {
+        perror("pthread_create");
+    }
+
+    void * status;
+    if (pthread_join(tcb, &status) != 0) { 
+        perror("pthread_join"); 
+    }
+
     // Serve the socket 
     int sock = serve_socket(port);
 
     // Wait for a connection
     printf("Waiting for a client ...");
+    fflush(stdout);
     int fd = accept_connection(sock);
-
-    // Send the username along the socket.
-
     printf(" Connected!\n");
 
+    // Loop forever, receiving messages from the client and sending them back
     while (1) {
 
         char buf[80] = "";

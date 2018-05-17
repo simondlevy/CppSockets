@@ -17,7 +17,7 @@ server: server.o sockettome.o
 	gcc -o server server.o sockettome.o
 
 server2: server2.o sockettome.o
-	gcc -o server2 server2.o sockettome.o
+	gcc -o server2 server2.o sockettome.o -lpthread
 
 client.o: client.c sockettome.h
 	gcc -Wall -c client.c
