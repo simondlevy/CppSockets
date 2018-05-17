@@ -4,6 +4,10 @@
    connect to serer, then communicating once a connection is established
 
    Adapted from http://web.eecs.utk.edu/~huangj/cs360/360/notes/Sockets/socketfun.c
+
+   Copyright Simon D. Levy 2018
+
+   MIT License
  */
 
 #include <stdio.h>

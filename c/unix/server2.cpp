@@ -1,7 +1,11 @@
 /*
 
-   Example threaded server program for sockets
- */
+   Example program for ThreadedS cketClient
+ 
+   Copyright Simon D. Levy 2018
+
+   MIT License
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
