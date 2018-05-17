@@ -12,6 +12,31 @@
 #include <stdbool.h>
 #include <time.h>
 
+
+class ThreadedSocketServer {
+
+    public:
+
+        ThreadedSocketServer(char * host, int port) 
+        {
+        }
+
+        bool connected(void)
+        {
+            return false;
+        }
+
+        void send(char * buf, int len)
+        {
+        }
+
+        int recv(char * buf)
+        {
+            return 0;
+        }
+
+};
+
 static int serve_socket(int port)
 {
     int s;
