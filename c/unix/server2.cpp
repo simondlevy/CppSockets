@@ -52,10 +52,14 @@ int main(int argc, char ** argv)
 
             if (server.connected()) {
                 char buf[80] = "";
-                server.recv(buf, 80);
-                printf("Client said: %s\n", buf);
-                strcpy(buf, "reply");
-                server.send(buf, strlen(buf));
+                if (server.recv(buf, 80) > 0) {
+                    printf("Client said: %s\n", buf);
+                    strcpy(buf, "reply");
+                    server.send(buf, strlen(buf));
+                }
+                else {
+                    break;
+                }
             }
             else {
                 printf("Listening ...\n");

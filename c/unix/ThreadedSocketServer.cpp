@@ -27,7 +27,7 @@ typedef struct {
 
 } socket_info_t;
 
-void * threadfunc(void * arg)
+static void * threadfunc(void * arg)
 {
     socket_info_t * sockinfo = (socket_info_t *)arg;
 
