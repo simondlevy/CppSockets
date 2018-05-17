@@ -7,7 +7,9 @@
 
 CC = g++
 
-all: client server client2 server2
+ALL = client server client2 server2
+
+all: $(ALL)
 
 client: client.o sockettome.o
 	$(CC) -o client client.o sockettome.o
@@ -43,6 +45,6 @@ serve2: server2
 	./server2 20000
 
 clean:
-	rm -f client server *.o *~
+	rm -f $(ALL) *.o *~
 
 
