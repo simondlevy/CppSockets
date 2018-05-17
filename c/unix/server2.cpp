@@ -4,8 +4,11 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-#include "ThreadedSocketClient.h"
+#include "ThreadedSocketServer.h"
 
 static const float RATE = 1.0; // updates per second
 

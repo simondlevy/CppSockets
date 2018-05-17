@@ -18,8 +18,8 @@ client2: client2.o sockettome.o
 server: server.o sockettome.o
 	$(CC) -o server server.o sockettome.o
 
-server2: server2.o 
-	$(CC) -o server2 server2.o -lpthread
+server2: server2.o ThreadedSocketServer.o
+	$(CC) -o server2 server2.o ThreadedSocketServer.o -lpthread
 
 client.o: client.c sockettome.h
 	$(CC) -Wall -c client.c
@@ -30,8 +30,11 @@ client2.o: client2.c sockettome.h
 server.o: server.c sockettome.h
 	$(CC) -Wall -c server.c
 
-server2.o: server2.cpp sockettome.h
+server2.o: server2.cpp ThreadedSocketServer.h
 	$(CC) -Wall -c server2.cpp
+
+ThreadedSocketServer.o: ThreadedSocketServer.cpp ThreadedSocketServer.h
+	$(CC) -Wall -c ThreadedSocketServer.cpp
 
 sockettome.o: sockettome.c sockettome.h
 	$(CC) -Wall -c sockettome.c
