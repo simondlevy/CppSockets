@@ -18,8 +18,8 @@ client2: client2.o sockettome.o
 server: server.o sockettome.o
 	$(CC) -o server server.o sockettome.o
 
-server2: server2.o sockettome.o
-	$(CC) -o server2 server2.o sockettome.o -lpthread
+server2: server2.o 
+	$(CC) -o server2 server2.o -lpthread
 
 client.o: client.c sockettome.h
 	$(CC) -Wall -c client.c

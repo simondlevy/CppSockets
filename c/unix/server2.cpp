@@ -3,6 +3,11 @@
    Example threaded server program for sockets
  */
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,7 +16,53 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "sockettome.h"
+static int serve_socket(int port)
+{
+    int s;
+    struct sockaddr_in sn;
+    struct hostent *he;
+
+    if (!(he = gethostbyname("localhost"))) {
+        puts("can't gethostname");
+        exit(1);
+    }
+
+    bzero((char*)&sn, sizeof(sn));
+    sn.sin_family = AF_INET;
+    sn.sin_port = htons((short)port);
+    sn.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    if ((s = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+        perror("socket()");
+        exit(1);
+    }
+
+    if (bind(s, (struct sockaddr *)&sn, sizeof(sn)) == -1) {
+        perror("bind()");
+        exit(1);
+    }
+
+    return s;
+}
+
+static int accept_connection(int s)
+{
+    int x;
+    struct sockaddr_in sn;
+
+    if(listen(s, 1) == -1) {
+        perror("listen()");
+        exit(1);
+    }
+
+    bzero((char *)&sn, sizeof(sn));
+    if((x = accept(s, (struct sockaddr *)NULL, NULL)) == -1) {
+        perror("accept()");
+        exit(1);
+    }
+    return x;
+}
+
 
 static const float RATE = 1.0; // updates per second
 
