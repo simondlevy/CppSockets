@@ -37,6 +37,8 @@ void * threadfunc(void * arg)
 
 int main(int argc, char ** argv)
 {
+    // Require at least a port number on command line (host defaults to "localhost")
+    
     if (argc < 2) {
         fprintf(stderr, "Usage:   %s <PORT>\n", argv[0]);
         fprintf(stderr, "Example: %s 20000\n", argv[0]);
@@ -49,12 +51,14 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    pthread_t tcb;
+    // We'll use this structure to communicate with the listening thread
     socket_info_t sockinfo;
 
     // Serve the socket 
     sockinfo.sock = serve_socket(port);
 
+    // Launch the listening thread
+    pthread_t tcb;
     if (pthread_create(&tcb, NULL, threadfunc, &sockinfo) != 0) {
         perror("pthread_create");
     }
@@ -71,6 +75,7 @@ int main(int argc, char ** argv)
         }
     }
 
+    // Shut down the listening thread
     void * status;
     if (pthread_join(tcb, &status) != 0) { 
         perror("pthread_join"); 
