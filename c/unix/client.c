@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    char * hn = (argc > 2) ? argv[1] : "localhost";
+    char * hn = (argc > 2) ? argv[1] : (char *)"localhost";
     int port = atoi(argc > 2 ? argv[2] : argv[1]);
 
     char * un = getenv("USER");

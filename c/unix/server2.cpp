@@ -26,11 +26,7 @@ void * threadfunc(void * arg)
 {
     socket_info_t * sockinfo = (socket_info_t *)arg;
 
-    // Wait for a connection
-    printf("Waiting for a client ...");
-    fflush(stdout);
     sockinfo->fd = accept_connection(sockinfo->sock);
-    printf(" Connected!\n");
 
     return NULL;
 }
@@ -63,15 +59,30 @@ int main(int argc, char ** argv)
         perror("pthread_create");
     }
 
+    // Support periodic checking for client connection
+    float prevtime = 0;
+
     // Loop forever, receiving messages from the client and sending them back
     while (true) {
 
-        if (sockinfo.fd > 0) {
-            char buf[80] = "";
-            read(sockinfo.fd, buf, 80);
-            printf("Client said: %s\n", buf);
-            strcpy(buf, "reply");
-            write(sockinfo.fd, buf, strlen(buf));
+        struct timespec ts;
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
+        float currtime =  ts.tv_sec + ts.tv_nsec / 1.e9f;
+
+        if ((currtime - prevtime) > 1./RATE) {
+
+            prevtime = currtime;
+
+            if (sockinfo.fd > 0) {
+                char buf[80] = "";
+                read(sockinfo.fd, buf, 80);
+                printf("Client said: %s\n", buf);
+                strcpy(buf, "reply");
+                write(sockinfo.fd, buf, strlen(buf));
+            }
+            else {
+                printf("Listening ...\n");
+            }
         }
     }
 

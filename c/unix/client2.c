@@ -19,7 +19,7 @@
 
 static const float RATE = 1.0; // updates per second
 
-static char * messages[NMESSAGES] = {"one", "two", "three", "four", "five"};
+static const char * messages[NMESSAGES] = {"one", "two", "three", "four", "five"};
 static int  messageId = 0;
 
 int main(int argc, char ** argv)
@@ -32,7 +32,7 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    char * hn = (argc > 2) ? argv[1] : "localhost";
+    char * hn = (argc > 2) ? argv[1] : (char *)"localhost";
     int port = atoi(argc > 2 ? argv[2] : argv[1]);
 
     float prevtime = 0;
