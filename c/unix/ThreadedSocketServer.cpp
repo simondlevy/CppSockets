@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <strings.h>
+#include <fcntl.h>
 
 #include "ThreadedSocketServer.h"
 
@@ -45,6 +46,9 @@ static void * threadfunc(void * arg)
         exit(1);
     }
 
+    int flags = fcntl(sockinfo->fd, F_GETFL, 0);
+    fcntl(sockinfo->fd, F_SETFL, flags|O_NONBLOCK);
+ 
     return NULL;
 }
 

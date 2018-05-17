@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
                     server.send(buf, strlen(buf));
                 }
                 else {
-                    break;
+                    printf("still goin'\n");
                 }
             }
             else {

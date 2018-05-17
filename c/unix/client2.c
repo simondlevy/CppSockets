@@ -15,7 +15,6 @@
 #include <stdbool.h>
 #include <time.h>
 #include <fcntl.h>
-#include <sys/socket.h>
 
 #include "sockettome.h"
 
