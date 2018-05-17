@@ -27,29 +27,23 @@ typedef struct {
 
 } socket_info_t;
 
-static int accept_connection(int s)
+void * threadfunc(void * arg)
 {
-    int x;
+    socket_info_t * sockinfo = (socket_info_t *)arg;
+
     struct sockaddr_in sn;
 
-    if(listen(s, 1) == -1) {
+    if(listen(sockinfo->sock, 1) == -1) {
         perror("listen()");
         exit(1);
     }
 
     bzero((char *)&sn, sizeof(sn));
-    if((x = accept(s, (struct sockaddr *)NULL, NULL)) == -1) {
+
+    if((sockinfo->fd = accept(sockinfo->sock, (struct sockaddr *)NULL, NULL)) == -1) {
         perror("accept()");
         exit(1);
     }
-    return x;
-}
-
-void * threadfunc(void * arg)
-{
-    socket_info_t * sockinfo = (socket_info_t *)arg;
-
-    sockinfo->fd = accept_connection(sockinfo->sock);
 
     return NULL;
 }
