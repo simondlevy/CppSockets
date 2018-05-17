@@ -8,11 +8,25 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include <stdbool.h>
+#include <time.h>
 
 #include "sockettome.h"
 
+static const float RATE = 1.0; // updates per second
+
+// XXX should pass these to threadfunc
+static int fd;
+static int sock;
+
 void * threadfunc(void * arg)
 {
+    // Wait for a connection
+    printf("Waiting for a client ...");
+    fflush(stdout);
+    fd = accept_connection(sock);
+    printf(" Connected!\n");
+
     return NULL;
 }
 
@@ -32,32 +46,28 @@ int main(int argc, char ** argv)
 
     pthread_t tcb;
 
+    // Serve the socket 
+    sock = serve_socket(port);
+
     if (pthread_create(&tcb, NULL, threadfunc, NULL) != 0) {
         perror("pthread_create");
+    }
+
+    // Loop forever, receiving messages from the client and sending them back
+    while (true) {
+
+        if (fd > 0) {
+            char buf[80] = "";
+            read(fd, buf, 80);
+            printf("Client said: %s\n", buf);
+            strcpy(buf, "reply");
+            write(fd, buf, strlen(buf));
+        }
     }
 
     void * status;
     if (pthread_join(tcb, &status) != 0) { 
         perror("pthread_join"); 
-    }
-
-    // Serve the socket 
-    int sock = serve_socket(port);
-
-    // Wait for a connection
-    printf("Waiting for a client ...");
-    fflush(stdout);
-    int fd = accept_connection(sock);
-    printf(" Connected!\n");
-
-    // Loop forever, receiving messages from the client and sending them back
-    while (1) {
-
-        char buf[80] = "";
-        read(fd, buf, 80);
-        printf("Client said: %s\n", buf);
-        strcpy(buf, "reply");
-        write(fd, buf, strlen(buf));
     }
 
     return 0;
