@@ -21,12 +21,15 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadedSocketServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
+    <ClCompile Include="ThreadedSocketServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
