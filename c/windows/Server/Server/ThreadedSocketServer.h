@@ -33,3 +33,4 @@ public:
 
 	int receiveBuffer(char * buf, int len);
 };
+
