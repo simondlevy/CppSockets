@@ -56,7 +56,7 @@ ThreadedSocketServer::ThreadedSocketServer(int port)
 {
     socket_info_t * sockinfo = new socket_info_t;
     sockinfo->fd = 0;
-    _support = (void *)sockinfo;
+    _sockinfo = (void *)sockinfo;
 
     struct sockaddr_in sn;
     struct hostent *he;
@@ -85,7 +85,7 @@ ThreadedSocketServer::ThreadedSocketServer(int port)
 
 void ThreadedSocketServer::start(void)
 {
-    socket_info_t * sockinfo = (socket_info_t *)_support;
+    socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
     if (pthread_create(&sockinfo->thread, NULL, threadfunc, sockinfo) != 0) {
         perror("pthread_create");
     }
@@ -94,7 +94,7 @@ void ThreadedSocketServer::start(void)
 
 void ThreadedSocketServer::stop(void)
 {
-    socket_info_t * sockinfo = (socket_info_t *)_support;
+    socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
     void * status;
     if (pthread_join(sockinfo->thread, &status) != 0) { 
         perror("pthread_join"); 
@@ -103,18 +103,18 @@ void ThreadedSocketServer::stop(void)
 
 bool ThreadedSocketServer::connected(void)
 {
-    socket_info_t * sockinfo = (socket_info_t *)_support;
+    socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
     return sockinfo->fd > 0;
 }
 
 int ThreadedSocketServer::send(char * buf, int len)
 {
-    socket_info_t * sockinfo = (socket_info_t *)_support;
+    socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
     return write(sockinfo->fd, buf, len);
 }
 
 int ThreadedSocketServer::recv(char * buf, int len)
 {
-    socket_info_t * sockinfo = (socket_info_t *)_support;
+    socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
     return read(sockinfo->fd, buf, len);
 }

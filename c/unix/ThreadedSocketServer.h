@@ -13,7 +13,7 @@ class ThreadedSocketServer {
 
     private:
 
-       void * _support; 
+       void * _sockinfo; 
 
     public:
 
