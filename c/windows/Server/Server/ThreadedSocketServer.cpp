@@ -50,6 +50,14 @@ DWORD WINAPI threadfunc(LPVOID lpParameter)
 		return false;
 	}
 
+    // Make client socket non-blocking
+	unsigned long iMode = 1; // non-blocking
+	iResult = ioctlsocket(sockinfo->ClientSocket, FIONBIO, &iMode);
+	if (iResult != NO_ERROR) {
+		printf("ioctlsocket failed with error: %ld\n", iResult);
+	}
+
+
 	// No longer need server socket
 	closesocket(sockinfo->ListenSocket);
 
@@ -66,8 +74,6 @@ ThreadedSocketServer::ThreadedSocketServer(int port)
 
 	WSADATA wsaData;
 	int iResult;
-
-	SOCKET ClientSocket = INVALID_SOCKET;
 
 	struct addrinfo *result = NULL;
 	struct addrinfo hints;
