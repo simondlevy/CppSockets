@@ -29,6 +29,34 @@ typedef struct {
 
 } socket_info_t;
 
+DWORD WINAPI threadfunc(LPVOID lpParameter)
+{
+	socket_info_t * sockinfo = (socket_info_t *)lpParameter;
+
+	int iResult = listen(sockinfo->ListenSocket, SOMAXCONN);
+	if (iResult == SOCKET_ERROR) {
+		printf("listen failed with error: %d\n", WSAGetLastError());
+		closesocket(sockinfo->ListenSocket);
+		WSACleanup();
+		return false;
+	}
+
+	// Accept a client socket
+	sockinfo->ClientSocket = accept(sockinfo->ListenSocket, NULL, NULL);
+	if (sockinfo->ClientSocket == INVALID_SOCKET) {
+		printf("accept failed with error: %d\n", WSAGetLastError());
+		closesocket(sockinfo->ListenSocket);
+		WSACleanup();
+		return false;
+	}
+
+	// No longer need server socket
+	closesocket(sockinfo->ListenSocket);
+
+	return 0;
+}
+
+
 ThreadedSocketServer::ThreadedSocketServer(int port)
 {
 	socket_info_t * sockinfo = new socket_info_t;
@@ -93,27 +121,8 @@ ThreadedSocketServer::ThreadedSocketServer(int port)
 
 bool ThreadedSocketServer::start(void)
 {
-	socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
-
-	int iResult = listen(sockinfo->ListenSocket, SOMAXCONN);
-	if (iResult == SOCKET_ERROR) {
-		printf("listen failed with error: %d\n", WSAGetLastError());
-		closesocket(sockinfo->ListenSocket);
-		WSACleanup();
-		return false;
-	}
-
-	// Accept a client socket
-	sockinfo->ClientSocket = accept(sockinfo->ListenSocket, NULL, NULL);
-	if (sockinfo->ClientSocket == INVALID_SOCKET) {
-		printf("accept failed with error: %d\n", WSAGetLastError());
-		closesocket(sockinfo->ListenSocket);
-		WSACleanup();
-		return false;
-	}
-
-	// No longer need server socket
-	closesocket(sockinfo->ListenSocket);
+	DWORD threadfuncID;
+	HANDLE 	myHandle = CreateThread(0, 0, threadfunc, _sockinfo, 0, &threadfuncID);
 
 	return true;
 }
@@ -137,7 +146,9 @@ void ThreadedSocketServer::stop(void)
 
 bool ThreadedSocketServer::connected(void)
 {
-	return true;
+	socket_info_t * sockinfo = (socket_info_t *)_sockinfo;
+
+	return sockinfo->ClientSocket != INVALID_SOCKET;
 }
 
 int ThreadedSocketServer::sendBuffer(char * buf, int len)
