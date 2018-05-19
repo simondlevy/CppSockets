@@ -39,6 +39,9 @@ int main(int argc, char ** argv)
     // Support periodic checking for client connection
     float prevtime = 0;
 
+    // maintain a count of replies to send to client
+    int count = 0;
+
     // Loop forever, receiving messages from the client and sending them back
     while (true) {
 
@@ -54,7 +57,7 @@ int main(int argc, char ** argv)
                 char buf[80] = "";
                 if (server.recv(buf, 80) > 0) {
                     printf("Client said: %s\n", buf);
-                    strcpy(buf, "reply");
+                    sprintf(buf, "%d", count++);
                     server.send(buf, strlen(buf));
                 }
                 else {
