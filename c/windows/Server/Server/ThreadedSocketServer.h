@@ -2,8 +2,6 @@
 
 Class declaration for threaded socket server
 
-Adapted from http://web.eecs.utk.edu/~huangj/cs360/360/notes/Sockets/socketfun.c
-
 Copyright Simon D. Levy 2018
 
 MIT License
