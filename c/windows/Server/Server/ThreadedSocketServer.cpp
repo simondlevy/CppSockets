@@ -7,15 +7,12 @@ Copyright Simon D. Levy 2018
 MIT License
 */
 
-#include "stdafx.h"
-
-#undef UNICODE
-
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -147,6 +144,7 @@ void ThreadedSocketServer::stop(void)
 
 	// cleanup
 	closesocket(sockinfo->ClientSocket);
+	sockinfo->ClientSocket = INVALID_SOCKET;
 	WSACleanup();
 }
 
