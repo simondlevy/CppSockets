@@ -8,27 +8,15 @@
 
 #include "SocketCompat.h"
 
-// Windows
-#ifdef _WIN32
-#include <ws2tcpip.h>
-
-// Linux
-#else
-#include <netdb.h>
-#include <unistd.h>
-static const int INVALID_SOCKET = -1;
-static const int SOCKET_ERROR   = -1;
-static void closesocket(int socket) { close(socket); }
+#ifndef _WIN32
 static void WSACleanup(void) { }
 #endif
-
-#include <stdio.h>
 
 // Called once on main thread
 SocketCompat::SocketCompat(const char * host, const short port) 
 {
-    sprintf(_host, "%s", host);
-    sprintf(_port, "%d", port);
+    sprintf_s(_host, "%s", host);
+    sprintf_s(_port, "%d", port);
 
     // No connection yet
     _sock = INVALID_SOCKET;
@@ -49,7 +37,7 @@ SocketCompat::SocketCompat(const char * host, const short port)
     _addressInfo = NULL;
     iResult = getaddrinfo(_host, _port, &hints, &_addressInfo);
     if ( iResult != 0 ) {
-        sprintf(_message, "getaddrinfo() failed with error: %d", iResult);
+        sprintf_s(_message, "getaddrinfo() failed with error: %d", iResult);
         WSACleanup();
         return;
     }
@@ -57,7 +45,7 @@ SocketCompat::SocketCompat(const char * host, const short port)
     // Create a SOCKET for connecting to server, returning on failure
     _sock = socket(_addressInfo->ai_family, _addressInfo->ai_socktype, _addressInfo->ai_protocol);
     if (_sock == INVALID_SOCKET) {
-        sprintf(_message, "socket() failed");
+        sprintf_s(_message, "socket() failed");
         WSACleanup();
         return;
     }
@@ -94,7 +82,7 @@ bool SocketCompat::initWinsock(void)
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
-        sprintf(_message, "WSAStartup() failed with error: %d\n", iResult);
+        sprintf_s(_message, "WSAStartup() failed with error: %d\n", iResult);
         return false;
     }
 #endif

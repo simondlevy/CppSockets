@@ -20,7 +20,7 @@ void SocketClient::openConnection(void)
     if (iResult == SOCKET_ERROR) {
         closesocket(_sock);
         _sock = INVALID_SOCKET;
-        sprintf(_message, "connect() failed; please make sure server is running");
+        sprintf_s(_message, "connect() failed; please make sure server is running");
         return;
     }
 

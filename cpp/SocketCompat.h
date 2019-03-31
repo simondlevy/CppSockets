@@ -17,6 +17,7 @@
 
 // Linux
 #else
+#define sprintf_s sprintf
 typedef int SOCKET;
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -25,7 +26,6 @@ typedef int SOCKET;
 static const int INVALID_SOCKET = -1;
 static const int SOCKET_ERROR   = -1;
 static void closesocket(int socket) { close(socket); }
-static void WSACleanup(void) { }
 #endif
 
 #include <stdio.h>
@@ -34,12 +34,12 @@ class SocketCompat {
 
     private:
 
-        char _host[200];
-        char _port[10];
-
         bool initWinsock(void);
 
     protected:
+
+        char _host[200];
+        char _port[10];
 
         SOCKET _sock;
         SOCKET _conn;
