@@ -8,19 +8,29 @@
 
 #pragma once
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#undef TEXT
+#include <winsock2.h>
+#else
+typedef int SOCKET;
 #include <sys/types.h>
+#include <sys/socket.h>
+#endif
 
 class SocketServer {
 
     private:
 
         char _host[200];
-        short _port;
+        char _port[10];
 
-        int _sock;
-        int _conn;
+        SOCKET _socket;
+        SOCKET _conn;
 
         char _message[200];
+
+        bool initWinsock(void);
 
     public:
 

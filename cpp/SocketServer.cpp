@@ -8,62 +8,83 @@
 
 #include "SocketServer.h"
 
-#include <sys/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
+// Windows
+#ifdef _WIN32
+#include <ws2tcpip.h>
 
-#ifndef _WIN32
+// Linux
+#else
 #include <netdb.h>
-#include <netinet/in.h>
 #include <unistd.h>
+static const int INVALID_SOCKET = -1;
+static const int SOCKET_ERROR   = -1;
+static void closesocket(int socket) { close(socket); }
+static void WSACleanup(void) { }
+#endif
+
+#include <stdio.h>
 
 SocketServer::SocketServer(const char * host, short port)
 {
     // acceptConnection() will use these for reporting
-    strcpy(_host, host);
-    _port = port;
+    sprintf(_host, "%s", host);
+    sprintf(_port, "%d", port);
 
-    // Set up to work on localhost, exiting on failure
-    struct hostent *he = gethostbyname(_host);
-    if (!he) {
-        sprintf(_message, "gethostbyname() failed");
+    // No connections yet
+    _socket = INVALID_SOCKET;
+    _conn = INVALID_SOCKET;
+    *_message = 0;
+
+    int iResult = 0;
+
+    // Initialize Winsock, returning on failure
+    if (!initWinsock()) return;
+    
+    // Set up client address info
+    struct addrinfo hints = {0};
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    
+    // Resolve the server address and port, returning on failure
+    struct addrinfo * addressInfo = NULL;
+    iResult = getaddrinfo(_host, _port, &hints, &addressInfo);
+    if ( iResult != 0 ) {
+        sprintf(_message, "getaddrinfo() failed with error: %d", iResult);
+        WSACleanup();
         return;
     }
 
-    // Create socket, exiting on failure
-    _sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (_sock == -1) {
+    // Create a SOCKET for connecting to server, returning on failure
+    _socket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
+    if (_socket == INVALID_SOCKET) {
         sprintf(_message, "socket() failed");
+        WSACleanup();
         return;
     }
-
-    // Set up socket address
-    struct sockaddr_in sn = {0};
-    sn.sin_family = AF_INET;
-    sn.sin_port   = htons(_port);
-    sn.sin_addr = *(struct in_addr*)(he->h_addr_list[0]);
 
     // Bind socket to address, exiting on failure
-    if (bind(_sock, (struct sockaddr*)&sn, sizeof(sn)) == -1) {
+    iResult = bind(_socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
+    if (iResult == SOCKET_ERROR) {
+        closesocket(_socket);
+        _socket = INVALID_SOCKET;
         sprintf(_message, "bind() failed");
+        return;
     }
 }
 
 void SocketServer::acceptConnection(void)
 {
     // Listen for a connection, exiting on failure
-    if (listen(_sock, 1)  == -1) {
+    if (listen(_socket, 1)  == -1) {
         sprintf(_message, "listen() failed");
         return;
     }
 
     // Accept connection, exiting on failure
-    printf("Waiting for client to connect on %s:%d ... ", _host, _port);
+    printf("Waiting for client to connect on %s:%s ... ", _host, _port);
     fflush(stdout);
-    _conn = accept(_sock, (struct sockaddr *)NULL, NULL);
-    if (_conn == -1) {
+    _conn = accept(_socket, (struct sockaddr *)NULL, NULL);
+    if (_conn == SOCKET_ERROR) {
         sprintf(_message, "accept() failed");
         return;
     }
@@ -73,20 +94,29 @@ void SocketServer::acceptConnection(void)
 
 bool SocketServer::sendData(void * buf, size_t len)
 {
-    return (size_t)send(_conn, buf, len, 0)  == len;
+    return (size_t)send(_conn, (const char *)buf, len, 0) == len;
 }
 
 bool SocketServer::receiveData(void * buf, size_t len)
 {
-    size_t got = (size_t)recv(_conn, buf, len, 0);
-    //printf("%ld bytes received\n", got);
-    //fflush(stdout);
-    return got == len;
+    return (size_t)recv(_conn, (char *)buf, len, 0) == len;
 }
 
 void SocketServer::closeConnection(void)
 {
-    close(_conn);
+    closesocket(_conn);
 }
 
+bool SocketServer::initWinsock(void)
+{
+#ifdef _WIN32
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != 0) {
+        sprintf(_message, "WSAStartup() failed with error: %d\n", iResult);
+        return false;
+    }
 #endif
+    return true;
+}
+

@@ -8,8 +8,11 @@
 
 #include "SocketClient.h"
 
+// Windows
 #ifdef _WIN32
 #include <ws2tcpip.h>
+
+// Linux
 #else
 #include <netdb.h>
 #include <unistd.h>
@@ -44,7 +47,6 @@ void SocketClient::openConnection(void)
     struct addrinfo hints = {0};
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
-    //hints.ai_protocol = IPPROTO_TCP;
     
     // Resolve the server address and port, returning on failure
     struct addrinfo * addressInfo = NULL;
