@@ -19,14 +19,6 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
-void SocketServer::errchk(int val, const char * msg)
-{
-    if (val == -1) {
-        perror(msg);
-        exit(1);
-    }
-}
-
 SocketServer::SocketServer(const char * host, short port)
 {
     // acceptConnection() will use these for reporting
@@ -36,13 +28,16 @@ SocketServer::SocketServer(const char * host, short port)
     // Set up to work on localhost, exiting on failure
     struct hostent *he = gethostbyname(_host);
     if (!he) {
-        fprintf(stderr, "can't gethostname");
-        exit(1);
+        sprintf(_message, "gethostbyname() failed");
+        return;
     }
 
     // Create socket, exiting on failure
     _sock = socket(AF_INET, SOCK_STREAM, 0);
-    errchk(_sock, "socket()");
+    if (_sock == -1) {
+        sprintf(_message, "socket() failed");
+        return;
+    }
 
     // Set up socket address
     struct sockaddr_in sn = {0};
@@ -51,19 +46,27 @@ SocketServer::SocketServer(const char * host, short port)
     sn.sin_addr = *(struct in_addr*)(he->h_addr_list[0]);
 
     // Bind socket to address, exiting on failure
-    errchk(bind(_sock, (struct sockaddr*)&sn, sizeof(sn)), "bind()");
+    if (bind(_sock, (struct sockaddr*)&sn, sizeof(sn)) == -1) {
+        sprintf(_message, "bind() failed");
+    }
 }
 
 void SocketServer::acceptConnection(void)
 {
     // Listen for a connection, exiting on failure
-    errchk(listen(_sock, 1) , "listen()");
+    if (listen(_sock, 1)  == -1) {
+        sprintf(_message, "listen() failed");
+        return;
+    }
 
     // Accept connection, exiting on failure
     printf("Waiting for client to connect on %s:%d ... ", _host, _port);
     fflush(stdout);
     _conn = accept(_sock, (struct sockaddr *)NULL, NULL);
-    errchk(_conn, "accept()");
+    if (_conn == -1) {
+        sprintf(_message, "accept() failed");
+        return;
+    }
     printf("connected\n");
     fflush(stdout);
 }

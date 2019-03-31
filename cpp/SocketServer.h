@@ -16,10 +16,11 @@ class SocketServer {
 
         char _host[200];
         short _port;
+
         int _sock;
         int _conn;
 
-        void errchk(int val, const char * msg);
+        char _message[200];
 
     public:
 
