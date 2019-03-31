@@ -31,7 +31,7 @@ SocketCompat::SocketCompat(const char * host, const short port)
     sprintf(_port, "%d", port);
 
     // No connection yet
-    _socket = INVALID_SOCKET;
+    _sock = INVALID_SOCKET;
     _connected = false;
     *_message = 0;
 
@@ -55,8 +55,8 @@ SocketCompat::SocketCompat(const char * host, const short port)
     }
 
     // Create a SOCKET for connecting to server, returning on failure
-    _socket = socket(_addressInfo->ai_family, _addressInfo->ai_socktype, _addressInfo->ai_protocol);
-    if (_socket == INVALID_SOCKET) {
+    _sock = socket(_addressInfo->ai_family, _addressInfo->ai_socktype, _addressInfo->ai_protocol);
+    if (_sock == INVALID_SOCKET) {
         sprintf(_message, "socket() failed");
         WSACleanup();
         return;
@@ -65,17 +65,17 @@ SocketCompat::SocketCompat(const char * host, const short port)
 
 void SocketCompat::closeConnection(void)
 {
-    closesocket(_socket);
+    closesocket(_conn);
 }
 
 bool SocketCompat::sendData(void *buf, size_t len)
 {
-    return (size_t)send(_socket, (const char *)buf, len, 0) == len;
+    return (size_t)send(_conn, (const char *)buf, len, 0) == len;
 }
 
 bool SocketCompat::receiveData(void *buf, size_t len)
 {
-    return (size_t)recv(_socket, (char *)buf, len, 0) == len;
+    return (size_t)recv(_conn, (char *)buf, len, 0) == len;
 }
 
 bool SocketCompat::isConnected(void)

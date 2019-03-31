@@ -41,7 +41,8 @@ class SocketCompat {
 
     protected:
 
-        SOCKET _socket;
+        SOCKET _sock;
+        SOCKET _conn;
 
         struct addrinfo * _addressInfo;
 
