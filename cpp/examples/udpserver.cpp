@@ -16,105 +16,90 @@
 
 #define BUFSIZE 1024
 
-void error(const char *msg) 
-{
-    fprintf(stderr, "%s\n", msg);
-    exit(1);
-}
-
 class UdpSocketServer {
 
+    private:
 
+        int _sockfd;
+        struct sockaddr_in _serveraddr; 
+        struct sockaddr_in _clientaddr;
+        unsigned int _clientlen = sizeof(_clientaddr);
+
+        static void error(const char * msg)
+        {
+            fprintf(stderr, "%s\n", msg);
+            exit(1);
+        }
+
+    public:
+
+        UdpSocketServer(const char * host, short port)
+        {
+            _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+            if (_sockfd < 0) {
+                error("ERROR opening socket");
+            }
+
+            // setsockopt: Handy debugging trick that lets 
+            // us rerun the server immediately after we kill it; 
+            // otherwise we have to wait about 20 secs. 
+            // Eliminates "ERROR on binding: Address already in use" error. 
+            int optval = 1;
+            setsockopt(_sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval , sizeof(int));
+
+            bzero((char *) &_serveraddr, sizeof(_serveraddr));
+            _serveraddr.sin_family = AF_INET;
+            _serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+            _serveraddr.sin_port = htons(port);
+
+            if (bind(_sockfd, (struct sockaddr *) &_serveraddr, sizeof(_serveraddr)) < 0) {
+                error("ERROR on binding");
+            }
+        }
+
+        void receiveData(char  * buf, size_t len)
+        {
+            int n = recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen);
+
+            struct hostent * hostp = gethostbyaddr((const char *)&_clientaddr.sin_addr.s_addr, sizeof(_clientaddr.sin_addr.s_addr), AF_INET);
+            if (hostp == NULL) {
+                error("ERROR on gethostbyaddr");
+            }
+            char * hostaddrp = inet_ntoa(_clientaddr.sin_addr);
+            if (hostaddrp == NULL) {
+                error("ERROR on inet_ntoa");
+            }
+            printf("server received datagram from %s (%s)\n", hostp->h_name, hostaddrp);
+            printf("server received %d/%d bytes: %s\n", (int)strlen(buf), n, buf);
+        }
+
+        void sendData(char * buf, size_t len)
+        {
+            if (sendto(_sockfd, buf, strlen(buf), 0, (struct sockaddr *) &_clientaddr, _clientlen) < 0)  {
+                error("ERROR in sendto");
+            }
+        }
 };
 
 int main(int argc, char **argv) 
 {
-    int sockfd; /* socket */
-    int portno; /* port to listen on */
-    unsigned int clientlen; /* byte size of client's address */
-    struct sockaddr_in serveraddr; /* server's addr */
-    struct sockaddr_in clientaddr; /* client addr */
-    struct hostent *hostp; /* client host info */
-    char buf[BUFSIZE]; /* message buf */
-    char *hostaddrp; /* dotted decimal host addr string */
-    int optval; /* flag value for setsockopt */
-    int n; /* message byte size */
-
-    /* 
-     * check command line arguments 
-     */
-    if (argc != 2) {
-        fprintf(stderr, "usage: %s <port>\n", argv[0]);
-        exit(1);
+    if (argc < 2) {
+        fprintf(stderr, "Usage:   %s PORT\n", argv[0]);
+        fprintf(stderr, "Example: %s 5000\n", argv[0]);
+        return 1;
     }
-    portno = atoi(argv[1]);
 
-    /* 
-     * socket: create the parent socket 
-     */
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0) 
-        error("ERROR opening socket");
+    UdpSocketServer server("127.0.0.1", atoi(argv[1]));
 
-    /* setsockopt: Handy debugging trick that lets 
-     * us rerun the server immediately after we kill it; 
-     * otherwise we have to wait about 20 secs. 
-     * Eliminates "ERROR on binding: Address already in use" error. 
-     */
-    optval = 1;
-    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, 
-            (const void *)&optval , sizeof(int));
+    while (true) {
 
-    /*
-     * build the server's Internet address
-     */
-    bzero((char *) &serveraddr, sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serveraddr.sin_port = htons((unsigned short)portno);
+        char buf[BUFSIZE];
 
-    /* 
-     * bind: associate the parent socket with a port 
-     */
-    if (bind(sockfd, (struct sockaddr *) &serveraddr, 
-                sizeof(serveraddr)) < 0) 
-        error("ERROR on binding");
-
-    /* 
-     * main loop: wait for a datagram, then echo it
-     */
-    clientlen = sizeof(clientaddr);
-    while (1) {
-
-        /*
-         * recvfrom: receive a UDP datagram from a client
-         */
         bzero(buf, BUFSIZE);
-        n = recvfrom(sockfd, buf, BUFSIZE, 0,
-                (struct sockaddr *) &clientaddr, &clientlen);
-        if (n < 0)
-            error("ERROR in recvfrom");
 
-        /* 
-         * gethostbyaddr: determine who sent the datagram
-         */
-        hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, 
-                sizeof(clientaddr.sin_addr.s_addr), AF_INET);
-        if (hostp == NULL)
-            error("ERROR on gethostbyaddr");
-        hostaddrp = inet_ntoa(clientaddr.sin_addr);
-        if (hostaddrp == NULL)
-            error("ERROR on inet_ntoa\n");
-        printf("server received datagram from %s (%s)\n", 
-                hostp->h_name, hostaddrp);
-        printf("server received %d/%d bytes: %s\n", (int)strlen(buf), n, buf);
+        server.receiveData(buf, BUFSIZE);
 
-        /* 
-         * sendto: echo the input back to the client 
-         */
-        n = sendto(sockfd, buf, strlen(buf), 0, 
-                (struct sockaddr *) &clientaddr, clientlen);
-        if (n < 0) 
-            error("ERROR in sendto");
+        server.sendData(buf, BUFSIZE);
+
     }
 }
