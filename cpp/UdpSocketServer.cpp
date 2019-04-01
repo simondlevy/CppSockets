@@ -16,7 +16,7 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
     _serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_sockfd, (struct sockaddr *) &_serveraddr, sizeof(_serveraddr)) < 0) {
-        error("ERROR on binding");
+        sprintf(_message, "ERROR on binding");
     }
 }
 

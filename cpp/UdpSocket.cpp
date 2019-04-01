@@ -12,7 +12,8 @@ UdpSocket::UdpSocket(const char * host, short port)
 {
     _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (_sockfd < 0) {
-        error("ERROR opening socket");
+        sprintf(_message, "ERROR opening socket");
+        return;
     }
 
     bzero((char *) &_serveraddr, sizeof(_serveraddr));
@@ -29,10 +30,3 @@ bool UdpSocket::receiveData(void * buf, size_t len, struct sockaddr_in * addr, u
 {
     return (size_t)recvfrom(_sockfd, buf, len, 0, (struct sockaddr *)addr, addrlen) == len;
 }
-
-void UdpSocket::error(const char * msg)
-{
-    fprintf(stderr, "%s\n", msg);
-    exit(1);
-}
-

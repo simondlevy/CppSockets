@@ -20,6 +20,8 @@ class UdpSocket {
 
     protected:
 
+        char _message[200];
+
         UdpSocket(const char * host, short port);
 
         int _sockfd;
@@ -29,6 +31,4 @@ class UdpSocket {
         bool sendData(void * buf, size_t len, struct sockaddr_in * addr, unsigned int addrlen);
 
         bool receiveData(void * buf, size_t len, struct sockaddr_in * addr, unsigned int * addrlen);
-
-        void error(const char * msg);
 };
