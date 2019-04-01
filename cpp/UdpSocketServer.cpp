@@ -1,5 +1,5 @@
 /*
- * UDP SocketServer.cpp: general-purpose TCP socket server code
+ * UDP SocketServer.cpp: general-purpose UDP socket server code
  *
  * Copyright (C) 2019 Simon D. Levy
  *

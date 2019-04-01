@@ -1,3 +1,11 @@
+/*
+ * UDP Socket.h: general-purpose UDP socket code
+ *
+ * Copyright (C) 2019 Simon D. Levy
+ *
+ * MIT License
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

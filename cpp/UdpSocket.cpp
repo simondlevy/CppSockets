@@ -1,3 +1,11 @@
+/*
+ * UDP Socket.cpp: general-purpose UDP socket code
+ *
+ * Copyright (C) 2019 Simon D. Levy
+ *
+ * MIT License
+ */
+
 #include "UdpSocket.h"
 
 UdpSocket::UdpSocket(const char * host, short port)
