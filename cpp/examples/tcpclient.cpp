@@ -28,6 +28,10 @@ int main(int argc, char ** argv)
 
     client.sendData(message, strlen(message));
 
+    client.receiveData(message, 100);
+
+    printf("Server said: %s\n", message);
+
     return 0;
 }
 

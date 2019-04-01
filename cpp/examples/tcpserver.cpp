@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char ** argv)
 {
@@ -28,6 +29,10 @@ int main(int argc, char ** argv)
     server.receiveData(message, 100);
 
     printf("Client said: %s\n", message);
+
+    strcpy(message, "Hello from server!");
+
+    server.sendData(message, 100);
 
     server.closeConnection();
 
