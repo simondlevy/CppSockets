@@ -57,16 +57,6 @@ void SocketCompat::closeConnection(void)
     closesocket(_conn);
 }
 
-bool SocketCompat::sendData(void *buf, size_t len)
-{
-    return (size_t)send(_conn, (const char *)buf, len, 0) == len;
-}
-
-bool SocketCompat::receiveData(void *buf, size_t len)
-{
-    return (size_t)recv(_conn, (char *)buf, len, 0) == len;
-}
-
 bool SocketCompat::isConnected(void)
 {
     return _connected;

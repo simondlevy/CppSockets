@@ -22,7 +22,8 @@ void error(const char *msg) {
     exit(0);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
     int sockfd, portno, n;
     unsigned int serverlen;
     struct sockaddr_in serveraddr;
@@ -73,5 +74,6 @@ int main(int argc, char **argv) {
     if (n < 0) 
       error("ERROR in recvfrom");
     printf("Echo from server: %s", buf);
+
     return 0;
 }
