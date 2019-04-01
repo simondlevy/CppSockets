@@ -11,4 +11,5 @@ linux/*client
 .idea
 .kdev4
 .vscode
-x64
+x64/
+Debug/

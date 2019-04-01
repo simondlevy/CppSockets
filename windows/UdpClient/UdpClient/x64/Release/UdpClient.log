@@ -1,1 +1,8 @@
-﻿
+﻿  pch.cpp
+  UdpClient.cpp
+c:\users\owner\desktop\cppsockets\windows\udpclient\udpclient\udpclient.cpp(37): warning C4244: '=': conversion from 'SOCKET' to 'int', possible loss of data
+c:\users\owner\desktop\cppsockets\windows\udpclient\udpclient\udpclient.cpp(57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Generating code
+  All 5 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  UdpClient.vcxproj -> C:\Users\owner\Desktop\CppSockets\windows\UdpClient\x64\Release\UdpClient.exe
