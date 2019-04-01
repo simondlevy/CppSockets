@@ -10,6 +10,8 @@
 
 UdpSocket::UdpSocket(const char * host, short port)
 {
+    *_message = 0;
+
     _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (_sockfd < 0) {
         sprintf(_message, "ERROR opening socket");
