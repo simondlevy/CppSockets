@@ -17,6 +17,11 @@ bool UdpSocket::sendData(void * buf, size_t len, struct sockaddr_in * addr, unsi
     return (size_t)sendto(_sockfd, buf, len, 0, (struct sockaddr *)addr, addrlen) == len;
 }
 
+bool UdpSocket::receiveData(void * buf, size_t len, struct sockaddr_in * addr, unsigned int * addrlen)
+{
+    return (size_t)recvfrom(_sockfd, buf, len, 0, (struct sockaddr *)addr, addrlen) == len;
+}
+
 void UdpSocket::error(const char * msg)
 {
     fprintf(stderr, "%s\n", msg);
