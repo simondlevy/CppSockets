@@ -14,14 +14,14 @@ CFLAGS = -Wall -std=c++11
 
 all: $(ALL)
 
-tcpserver: tcpserver.o SocketServer.o SocketCompat.o TcpCompat.o
-	g++ -o tcpserver tcpserver.o SocketServer.o SocketCompat.o TcpCompat.o
+tcpserver: tcpserver.o TcpSocketServer.o TcpSocketCompat.o 
+	g++ -o tcpserver tcpserver.o TcpSocketServer.o TcpSocketCompat.o 
 
-tcpserver.o: tcpserver.cpp ../SocketServer.h ../SocketCompat.h
+tcpserver.o: tcpserver.cpp ../TcpSocketServer.h ../TcpSocketCompat.h
 	g++ $(CFLAGS) -I.. -c tcpserver.cpp
 
-tcpclient: tcpclient.o SocketClient.o SocketCompat.o TcpCompat.o
-	g++ -o tcpclient tcpclient.o SocketClient.o SocketCompat.o TcpCompat.o
+tcpclient: tcpclient.o TcpSocketClient.o TcpSocketCompat.o 
+	g++ -o tcpclient tcpclient.o TcpSocketClient.o TcpSocketCompat.o 
 
 tcpclient.o: tcpclient.cpp
 	g++ $(CFLAGS) -I.. -c tcpclient.cpp
@@ -38,17 +38,17 @@ udpclient: udpclient.o
 udpclient.o: udpclient.cpp
 	g++ $(CFLAGS) -c udpclient.cpp
 
-SocketClient.o: ../SocketClient.cpp ../SocketClient.h ../SocketCompat.h
-	g++ $(CFLAGS) -c ../SocketClient.cpp
+TcpSocketClient.o: ../TcpSocketClient.cpp ../TcpSocketClient.h ../TcpSocketCompat.h
+	g++ $(CFLAGS) -c ../TcpSocketClient.cpp
 
-SocketServer.o: ../SocketServer.cpp ../SocketServer.h ../SocketCompat.h
-	g++ $(CFLAGS) -c ../SocketServer.cpp
+TcpSocketServer.o: ../TcpSocketServer.cpp ../TcpSocketServer.h ../TcpSocketCompat.h
+	g++ $(CFLAGS) -c ../TcpSocketServer.cpp
 
-SocketCompat.o: ../SocketCompat.cpp ../SocketCompat.h
-	g++ $(CFLAGS) -c ../SocketCompat.cpp
+TcpSocketCompat.o: ../TcpSocketCompat.cpp ../TcpSocketCompat.h
+	g++ $(CFLAGS) -c ../TcpSocketCompat.cpp
 
-TcpCompat.o: ../TcpCompat.cpp
-	g++ $(CFLAGS) -c ../TcpCompat.cpp
+TcpSocketCompat.o: ../TcpSocketCompat.cpp
+	g++ $(CFLAGS) -c ../TcpSocketCompat.cpp
 
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__

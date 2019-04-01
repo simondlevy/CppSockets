@@ -1,5 +1,5 @@
 /*
- * TcpSocketClient.h: TCP socket client class
+ * TcpSocketClient.h: class for TCP sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
@@ -8,11 +8,13 @@
 
 #pragma once
 
-#include "SocketClient.h"
+#include "TcpSocketCompat.h"
 
-class TcpSocketClient : public SocketClient {
+class TcpSocketClient : public TcpSocketCompat {
 
     public:
 
-        TcpSocketClient(const char * host, short port) : SocketClient(host, port, SOCK_STREAM) { }
+        TcpSocketClient(const char * host, const short port);
+
+        void openConnection(void);
 };

@@ -1,5 +1,5 @@
 /*
- * TcpSocketServer.h: TCP socket server class
+ * TcpSocketServer.h: general-purpose socket server class
  *
  * Copyright (C) 2019 Simon D. Levy
  *
@@ -8,11 +8,13 @@
 
 #pragma once
 
-#include "SocketServer.h"
+#include "TcpSocketCompat.h"
 
-class TcpSocketServer : public SocketServer {
+class TcpSocketServer : public TcpSocketCompat {
 
     public:
 
-        TcpSocketServer(const char * host, short port) : SocketServer(host, port, SOCK_STREAM) { }
+        TcpSocketServer(const char * host, short port);
+
+        void acceptConnection(void);
 };

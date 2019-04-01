@@ -1,12 +1,12 @@
 /*
- * SocketCompat.cpp: cross-platform compatibility superclass for sockets
+ * TcpSocketCompat.cpp: cross-platform compatibility superclass for sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "SocketCompat.h"
+#include "TcpSocketCompat.h"
 
 #ifndef _WIN32
 static void WSACleanup(void) { }
@@ -14,7 +14,7 @@ static void closesocket(int socket) { close(socket); }
 #endif
 
 // Called once on main thread
-SocketCompat::SocketCompat(const char * host, const short port, int type) 
+TcpSocketCompat::TcpSocketCompat(const char * host, const short port) 
 {
     sprintf_s(_host, "%s", host);
     sprintf_s(_port, "%d", port);
@@ -32,7 +32,7 @@ SocketCompat::SocketCompat(const char * host, const short port, int type)
     // Set up client address info
     struct addrinfo hints = {0};
     hints.ai_family = AF_INET;
-    hints.ai_socktype = type;
+    hints.ai_socktype = SOCK_STREAM;
     
     // Resolve the server address and port, returning on failure
     _addressInfo = NULL;
@@ -52,22 +52,22 @@ SocketCompat::SocketCompat(const char * host, const short port, int type)
     }
 }
 
-void SocketCompat::closeConnection(void)
+void TcpSocketCompat::closeConnection(void)
 {
     closesocket(_conn);
 }
 
-bool SocketCompat::isConnected(void)
+bool TcpSocketCompat::isConnected(void)
 {
     return _connected;
 }
 
-char * SocketCompat::getMessage(void)
+char * TcpSocketCompat::getMessage(void)
 {
     return _message;
 }
 
-bool SocketCompat::initWinsock(void)
+bool TcpSocketCompat::initWinsock(void)
 {
 #ifdef _WIN32
     WSADATA wsaData;
@@ -78,4 +78,14 @@ bool SocketCompat::initWinsock(void)
     }
 #endif
     return true;
+}
+
+bool TcpSocketCompat::sendData(void *buf, size_t len)
+{
+    return (size_t)send(_conn, (const char *)buf, len, 0) == len;
+}
+
+bool TcpSocketCompat::receiveData(void *buf, size_t len)
+{
+    return (size_t)recv(_conn, (char *)buf, len, 0) == len;
 }

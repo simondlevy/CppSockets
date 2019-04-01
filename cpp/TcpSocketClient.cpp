@@ -1,12 +1,12 @@
 /*
- * SocketClient.cpp: Class for general socket client in Goshawk project
+ * TcpSocketClient.cpp: Class for TCP socket clients
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "SocketClient.h"
+#include "TcpSocketClient.h"
 
 #ifndef _WIN32
 static void closesocket(int socket) { close(socket); }
@@ -14,11 +14,11 @@ static void closesocket(int socket) { close(socket); }
 
 
 // Called once on main thread
-SocketClient::SocketClient(const char * host, const short port, int type) : SocketCompat(host, port, type)
+TcpSocketClient::TcpSocketClient(const char * host, const short port) : TcpSocketCompat(host, port)
 {
 }
 
-void SocketClient::openConnection(void)
+void TcpSocketClient::openConnection(void)
 {
     // Connect to server, returning on failure
     int iResult = connect(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen);

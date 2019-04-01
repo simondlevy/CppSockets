@@ -1,5 +1,5 @@
 /*
- * SocketCompat.h: cross-platform compatibility superclass for sockets
+ * TcpSocketCompat.h: cross-platform compatibility superclass for sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
@@ -29,7 +29,7 @@ static const int SOCKET_ERROR   = -1;
 
 #include <stdio.h>
 
-class SocketCompat {
+class TcpSocketCompat {
 
     private:
 
@@ -49,7 +49,7 @@ class SocketCompat {
 
         bool _connected;
 
-        SocketCompat(const char * host, const short port, int type);
+        TcpSocketCompat(const char * host, const short port);
 
     public:
 
