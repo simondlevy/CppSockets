@@ -47,8 +47,5 @@ TcpSocketServer.o: ../TcpSocketServer.cpp ../TcpSocketServer.h ../TcpSocketCompa
 TcpSocketCompat.o: ../TcpSocketCompat.cpp ../TcpSocketCompat.h
 	g++ $(CFLAGS) -c ../TcpSocketCompat.cpp
 
-TcpSocketCompat.o: ../TcpSocketCompat.cpp
-	g++ $(CFLAGS) -c ../TcpSocketCompat.cpp
-
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__
