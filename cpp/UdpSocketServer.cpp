@@ -10,10 +10,6 @@
 
 UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host, port)
 {
-    // setsockopt: Handy debugging trick that lets 
-    // us rerun the server immediately after we kill it; 
-    // otherwise we have to wait about 20 secs. 
-    // Eliminates "ERROR on binding: Address already in use" error. 
     int optval = 1;
     setsockopt(_sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval , sizeof(int));
 
@@ -30,16 +26,6 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
 void UdpSocketServer::receiveData(char  * buf, size_t len)
 {
     int n = recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen);
-
-    struct hostent * hostp = gethostbyaddr((const char *)&_clientaddr.sin_addr.s_addr, sizeof(_clientaddr.sin_addr.s_addr), AF_INET);
-    if (hostp == NULL) {
-        error("ERROR on gethostbyaddr");
-    }
-    char * hostaddrp = inet_ntoa(_clientaddr.sin_addr);
-    if (hostaddrp == NULL) {
-        error("ERROR on inet_ntoa");
-    }
-    printf("server received datagram from %s (%s)\n", hostp->h_name, hostaddrp);
     printf("server received %d/%d bytes: %s\n", (int)strlen(buf), n, buf);
 }
 
