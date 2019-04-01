@@ -1,6 +1,14 @@
+*~
 *.pyc
 *.swp
 *.o
 cpp/examples/*server
 cpp/examples/*client
-*~
+*.VC.db
+*.suo
+*.opendb
+.vs
+.idea
+.kdev4
+.vscode
+x64
