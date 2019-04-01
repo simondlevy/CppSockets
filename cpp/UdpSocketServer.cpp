@@ -54,9 +54,3 @@ void UdpSocketServer::sendData(char * buf, size_t len)
         error("ERROR in sendto");
     }
 }
-
-void UdpSocketServer::error(const char * msg)
-{
-    fprintf(stderr, "%s\n", msg);
-    exit(1);
-}

@@ -8,12 +8,6 @@
 
 #include "UdpSocketClient.h"
 
-void UdpSocketClient::error(const char * msg)
-{
-    fprintf(stderr, "%s\n", msg);
-    exit(1);
-}
-
 UdpSocketClient::UdpSocketClient(const char * host, short port)
 {
     _sockfd = socket(AF_INET, SOCK_DGRAM, 0);

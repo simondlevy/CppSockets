@@ -6,25 +6,17 @@
  * MIT License
  */
 
+#pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h> 
+#include "UdpSocket.h"
 
-class UdpSocketClient {
+class UdpSocketClient : public UdpSocket {
 
     private:
 
         int _sockfd;
         struct sockaddr_in _serveraddr;
         unsigned int _serverlen = sizeof(_serveraddr);
-
-        void error(const char * msg);
 
     public:
 

@@ -26,14 +26,14 @@ tcpclient: tcpclient.o TcpSocketClient.o TcpSocketCompat.o
 tcpclient.o: tcpclient.cpp
 	g++ $(CFLAGS) -I.. -c tcpclient.cpp
 
-udpserver: udpserver.o UdpSocketServer.o
-	g++ -o udpserver udpserver.o UdpSocketServer.o
+udpserver: udpserver.o UdpSocketServer.o UdpSocket.o
+	g++ -o udpserver udpserver.o UdpSocketServer.o UdpSocket.o
 
 udpserver.o: udpserver.cpp 
 	g++ $(CFLAGS) -I.. -c udpserver.cpp
 
-udpclient: udpclient.o  UdpSocketClient.o
-	g++ -o udpclient udpclient.o UdpSocketClient.o
+udpclient: udpclient.o  UdpSocketClient.o UdpSocket.o
+	g++ -o udpclient udpclient.o UdpSocketClient.o UdpSocket.o
 
 udpclient.o: udpclient.cpp
 	g++ $(CFLAGS) -I.. -c udpclient.cpp
@@ -52,6 +52,9 @@ UdpSocketServer.o: ../UdpSocketServer.cpp ../UdpSocketServer.h
 
 UdpSocketClient.o: ../UdpSocketClient.cpp ../UdpSocketClient.h
 	g++ $(CFLAGS) -c ../UdpSocketClient.cpp
+
+UdpSocket.o: ../UdpSocket.cpp ../UdpSocket.h
+	g++ $(CFLAGS) -c ../UdpSocket.cpp
 
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__
