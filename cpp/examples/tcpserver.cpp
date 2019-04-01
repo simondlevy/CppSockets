@@ -14,8 +14,8 @@
 int main(int argc, char ** argv)
 {
     if (argc < 2) {
-        fprintf(stderr, "Usage:   %s PORT", argv[0]);
-        fprintf(stderr, "Example: %s 5000", argv[0]);
+        fprintf(stderr, "Usage:   %s PORT\n", argv[0]);
+        fprintf(stderr, "Example: %s 5000\n", argv[0]);
         return 1;
     }
 

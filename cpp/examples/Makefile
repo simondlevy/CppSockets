@@ -14,10 +14,10 @@ CFLAGS = -Wall -std=c++11
 
 all: $(ALL)
 
-tcpserver: tcpserver.o
-	g++ -o tcpserver tcpserver.o
+tcpserver: tcpserver.o SocketServer.o SocketCompat.o
+	g++ -o tcpserver tcpserver.o SocketServer.o SocketCompat.o
 
-tcpserver.o: tcpserver.cpp
+tcpserver.o: tcpserver.cpp ../SocketServer.h ../SocketCompat.h
 	g++ $(CFLAGS) -I.. -c tcpserver.cpp
 
 tcpclient: tcpclient.o
@@ -37,6 +37,12 @@ udpclient: udpclient.o
 
 udpclient.o: udpclient.cpp
 	g++ $(CFLAGS) -c udpclient.cpp
+
+SocketServer.o: ../SocketServer.cpp ../SocketServer.h ../SocketCompat.h
+	g++ $(CFLAGS) -c ../SocketServer.cpp
+
+SocketCompat.o: ../SocketCompat.cpp ../SocketCompat.h
+	g++ $(CFLAGS) -c ../SocketCompat.cpp
 
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__
