@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 
         char buf[100];
         bzero(buf, 100);
-        server.receiveData(buf, 100);
+        server.receiveData((void *)buf, 100);
         printf("server received: %s\n", buf);
     }
 }

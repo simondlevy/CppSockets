@@ -20,12 +20,12 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
     }
 }
 
-bool UdpSocketServer::sendData(char * buf, size_t len)
+bool UdpSocketServer::sendData(void * buf, size_t len)
 {
-    return (size_t)sendto(_sockfd, buf, strlen(buf), 0, (struct sockaddr *) &_clientaddr, _clientlen) == len;
+    return (size_t)sendto(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, _clientlen) == len;
 }
 
-bool UdpSocketServer::receiveData(char  * buf, size_t len)
+bool UdpSocketServer::receiveData(void * buf, size_t len)
 {
     return (size_t)recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen) == len;
 }
