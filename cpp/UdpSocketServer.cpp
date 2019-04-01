@@ -27,6 +27,5 @@ bool UdpSocketServer::sendData(void * buf, size_t len)
 
 bool UdpSocketServer::receiveData(void * buf, size_t len)
 {
-    //return (size_t)recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen) == len;
     return UdpSocket::receiveData(buf, len, &_clientaddr, &_clientlen);
 }
