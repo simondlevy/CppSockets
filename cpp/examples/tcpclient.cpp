@@ -10,14 +10,23 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char ** argv)
 {
-    if (argc < 2) {
-        fprintf(stderr, "Usage:   %s PORT\n", argv[0]);
-        fprintf(stderr, "Example: %s 5000\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "Usage:   %s HOST PORT\n", argv[0]);
+        fprintf(stderr, "Example: %s localhost 5000\n", argv[0]);
         return 1;
     }
+
+    SocketClient client(argv[1], atoi(argv[2]));
+
+    client.openConnection();
+
+    char message[100] = "Hello from client!";
+
+    client.sendData(message, strlen(message));
 
     return 0;
 }

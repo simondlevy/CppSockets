@@ -23,6 +23,12 @@ int main(int argc, char ** argv)
 
     server.acceptConnection();
 
+    char message[100];
+
+    server.receiveData(message, 100);
+
+    printf("Client said: %s\n", message);
+
     server.closeConnection();
 
     return 0;
