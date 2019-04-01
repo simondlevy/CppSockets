@@ -2,8 +2,8 @@
 *.pyc
 *.swp
 *.o
-cpp/examples/*server
-cpp/examples/*client
+linux/*server
+linux/*client
 *.VC.db
 *.suo
 *.opendb
