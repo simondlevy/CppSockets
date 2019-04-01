@@ -6,7 +6,7 @@
  * MIT License
  */
 
-#include "SocketClient.h"
+#include "TcpSocketClient.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    SocketClient client(argv[1], atoi(argv[2]));
+    TcpSocketClient client(argv[1], atoi(argv[2]));
 
     client.openConnection();
 

@@ -12,7 +12,7 @@
 static void closesocket(int socket) { close(socket); }
 #endif
 
-SocketServer::SocketServer(const char * host, short port) : SocketCompat(host, port)
+SocketServer::SocketServer(const char * host, short port, int type) : SocketCompat(host, port, type)
 {
     // Bind socket to address, exiting on failure
     int iResult = bind(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen);

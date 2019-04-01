@@ -14,7 +14,7 @@ static void closesocket(int socket) { close(socket); }
 
 
 // Called once on main thread
-SocketClient::SocketClient(const char * host, const short port) : SocketCompat(host, port)
+SocketClient::SocketClient(const char * host, const short port, int type) : SocketCompat(host, port, type)
 {
 }
 

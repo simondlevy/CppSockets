@@ -12,9 +12,11 @@
 
 class SocketServer : public SocketCompat {
 
-    public:
+    protected:
 
-        SocketServer(const char * host, short port);
+        SocketServer(const char * host, short port, int type);
+
+    public:
 
         void acceptConnection(void);
 };

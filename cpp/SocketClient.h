@@ -14,7 +14,7 @@ class SocketClient : public SocketCompat {
 
     public:
 
-        SocketClient(const char * host, const short port);
+        SocketClient(const char * host, const short port, int type);
 
         void openConnection(void);
 };

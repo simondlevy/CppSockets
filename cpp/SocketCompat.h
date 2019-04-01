@@ -49,7 +49,7 @@ class SocketCompat {
 
         bool _connected;
 
-        SocketCompat(const char * host, const short port);
+        SocketCompat(const char * host, const short port, int type);
 
     public:
 

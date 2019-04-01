@@ -6,7 +6,7 @@
  * MIT License
  */
 
-#include "SocketServer.h"
+#include "TcpSocketServer.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    SocketServer server("127.0.0.1", atoi(argv[1]));
+    TcpSocketServer server("127.0.0.1", atoi(argv[1]));
 
     server.acceptConnection();
 

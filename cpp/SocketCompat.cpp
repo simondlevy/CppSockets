@@ -14,7 +14,7 @@ static void closesocket(int socket) { close(socket); }
 #endif
 
 // Called once on main thread
-SocketCompat::SocketCompat(const char * host, const short port) 
+SocketCompat::SocketCompat(const char * host, const short port, int type) 
 {
     sprintf_s(_host, "%s", host);
     sprintf_s(_port, "%d", port);
@@ -32,7 +32,7 @@ SocketCompat::SocketCompat(const char * host, const short port)
     // Set up client address info
     struct addrinfo hints = {0};
     hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_socktype = type;
     
     // Resolve the server address and port, returning on failure
     _addressInfo = NULL;
