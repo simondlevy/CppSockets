@@ -8,6 +8,10 @@
 
 #include "SocketServer.h"
 
+#ifndef _WIN32
+static void closesocket(int socket) { close(socket); }
+#endif
+
 SocketServer::SocketServer(const char * host, short port) : SocketCompat(host, port)
 {
     // Bind socket to address, exiting on failure

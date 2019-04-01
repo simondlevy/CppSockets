@@ -6,13 +6,25 @@
 # MIT License
 # 
 
-ALL = udpserver udpclient
+ALL = tcpserver tcpclient udpserver udpclient
 
 all: $(ALL)
 
 CFLAGS = -Wall -std=c++11
 
 all: $(ALL)
+
+tcpserver: tcpserver.o
+	g++ -o tcpserver tcpserver.o
+
+tcpserver.o: tcpserver.cpp
+	g++ $(CFLAGS) -I.. -c tcpserver.cpp
+
+tcpclient: tcpclient.o
+	g++ -o tcpclient tcpclient.o
+
+tcpclient.o: tcpclient.cpp
+	g++ $(CFLAGS) -c tcpclient.cpp
 
 udpserver: udpserver.o
 	g++ -o udpserver udpserver.o

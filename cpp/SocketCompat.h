@@ -25,7 +25,6 @@ typedef int SOCKET;
 #include <unistd.h>
 static const int INVALID_SOCKET = -1;
 static const int SOCKET_ERROR   = -1;
-static void closesocket(int socket) { close(socket); }
 #endif
 
 #include <stdio.h>

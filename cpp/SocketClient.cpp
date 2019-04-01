@@ -8,6 +8,11 @@
 
 #include "SocketClient.h"
 
+#ifndef _WIN32
+static void closesocket(int socket) { close(socket); }
+#endif
+
+
 // Called once on main thread
 SocketClient::SocketClient(const char * host, const short port) : SocketCompat(host, port)
 {

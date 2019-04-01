@@ -10,6 +10,7 @@
 
 #ifndef _WIN32
 static void WSACleanup(void) { }
+static void closesocket(int socket) { close(socket); }
 #endif
 
 // Called once on main thread
