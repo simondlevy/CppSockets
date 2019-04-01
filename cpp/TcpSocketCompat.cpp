@@ -24,8 +24,6 @@ TcpSocketCompat::TcpSocketCompat(const char * host, const short port)
     _connected = false;
     *_message = 0;
 
-    int iResult = 0;
-
     // Initialize Winsock, returning on failure
     if (!initWinsock()) return;
 
@@ -36,7 +34,7 @@ TcpSocketCompat::TcpSocketCompat(const char * host, const short port)
     
     // Resolve the server address and port, returning on failure
     _addressInfo = NULL;
-    iResult = getaddrinfo(_host, _port, &hints, &_addressInfo);
+    int iResult = getaddrinfo(_host, _port, &hints, &_addressInfo);
     if ( iResult != 0 ) {
         sprintf_s(_message, "getaddrinfo() failed with error: %d", iResult);
         WSACleanup();

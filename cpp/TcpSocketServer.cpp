@@ -14,9 +14,8 @@ static void closesocket(int socket) { close(socket); }
 
 TcpSocketServer::TcpSocketServer(const char * host, short port) : TcpSocketCompat(host, port)
 {
-    // Bind socket to address, exiting on failure
-    int iResult = bind(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen);
-    if (iResult == SOCKET_ERROR) {
+    // Bind socket to address
+    if (bind(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen) == SOCKET_ERROR) {
         closesocket(_sock);
         _sock = INVALID_SOCKET;
         sprintf_s(_message, "bind() failed");
