@@ -8,13 +8,8 @@
 
 #include "UdpSocketClient.h"
 
-UdpSocketClient::UdpSocketClient(const char * host, short port)
+UdpSocketClient::UdpSocketClient(const char * host, short port) : UdpSocket(host, port)
 {
-    _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (_sockfd < 0) {
-        error("ERROR opening socket");
-    }
-
     struct hostent * server = gethostbyname(host);
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host as %s\n", host);

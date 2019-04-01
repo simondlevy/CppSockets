@@ -8,13 +8,8 @@
 
 #include "UdpSocketServer.h"
 
-UdpSocketServer::UdpSocketServer(const char * host, short port)
+UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host, port)
 {
-    _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (_sockfd < 0) {
-        error("ERROR opening socket");
-    }
-
     // setsockopt: Handy debugging trick that lets 
     // us rerun the server immediately after we kill it; 
     // otherwise we have to wait about 20 secs. 

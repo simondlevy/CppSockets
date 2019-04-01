@@ -12,6 +12,8 @@ class UdpSocket {
 
     protected:
 
+        UdpSocket(const char * host, short port);
+
         int _sockfd;
 
         struct sockaddr_in _serveraddr;
