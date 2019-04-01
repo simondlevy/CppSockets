@@ -1,5 +1,5 @@
 /*
- * TcpSocketClient.h: class for TCP sockets
+ * TcpSocketClient.h: class for TCP client sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
