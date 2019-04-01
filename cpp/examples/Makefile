@@ -20,11 +20,11 @@ tcpserver: tcpserver.o SocketServer.o SocketCompat.o
 tcpserver.o: tcpserver.cpp ../SocketServer.h ../SocketCompat.h
 	g++ $(CFLAGS) -I.. -c tcpserver.cpp
 
-tcpclient: tcpclient.o
-	g++ -o tcpclient tcpclient.o
+tcpclient: tcpclient.o SocketClient.o SocketCompat.o
+	g++ -o tcpclient tcpclient.o SocketClient.o SocketCompat.o
 
 tcpclient.o: tcpclient.cpp
-	g++ $(CFLAGS) -c tcpclient.cpp
+	g++ $(CFLAGS) -I.. -c tcpclient.cpp
 
 udpserver: udpserver.o
 	g++ -o udpserver udpserver.o
@@ -37,6 +37,9 @@ udpclient: udpclient.o
 
 udpclient.o: udpclient.cpp
 	g++ $(CFLAGS) -c udpclient.cpp
+
+SocketClient.o: ../SocketClient.cpp ../SocketClient.h ../SocketCompat.h
+	g++ $(CFLAGS) -c ../SocketClient.cpp
 
 SocketServer.o: ../SocketServer.cpp ../SocketServer.h ../SocketCompat.h
 	g++ $(CFLAGS) -c ../SocketServer.cpp
