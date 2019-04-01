@@ -1,5 +1,5 @@
 /*
- * Test code for UDP server
+ * Test code for UDP socket server
  *
  * Copyright (C) 2019 Simon D. Levy
  *

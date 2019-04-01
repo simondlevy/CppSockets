@@ -1,8 +1,11 @@
-/* 
- * udpclient.c - A simple UDP client
- * usage: udpclient <host> <port>
- * https://www.cs.cmu.edu/afs/cs/academic/class/15213-f99/www/class26/udpclient.c
+/*
+ * Test code for UDP socket client
+ *
+ * Copyright (C) 2019 Simon D. Levy
+ *
+ * MIT License
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,68 +15,71 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 
-#define BUFSIZE 1024
+class UdpSocketClient {
 
-/* 
- * error - wrapper for perror
- */
-void error(const char *msg) {
-    perror(msg);
-    exit(0);
-}
+    private:
+
+        int _sockfd;
+        struct sockaddr_in _serveraddr;
+        unsigned int _serverlen = sizeof(_serveraddr);
+
+        void error(const char * msg)
+        {
+            fprintf(stderr, "%s\n", msg);
+            exit(1);
+        }
+
+    public:
+
+        UdpSocketClient(const char * host, short port)
+        {
+            _sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+            if (_sockfd < 0) {
+                error("ERROR opening socket");
+            }
+
+            struct hostent * server = gethostbyname(host);
+            if (server == NULL) {
+                fprintf(stderr,"ERROR, no such host as %s\n", host);
+                exit(0);
+            }
+
+            bzero((char *) &_serveraddr, sizeof(_serveraddr));
+            _serveraddr.sin_family = AF_INET;
+            bcopy((char *)server->h_addr, (char *)&_serveraddr.sin_addr.s_addr, server->h_length);
+            _serveraddr.sin_port = htons(port);
+        }
+
+        bool sendData(char *buf, size_t len)
+        {
+            return (size_t)sendto(_sockfd, buf, strlen(buf), 0, (const sockaddr *)&_serveraddr, _serverlen) == len;
+        }
+
+        bool receiveData(char *buf, size_t len)
+        {
+            return (size_t)recvfrom(_sockfd, buf, strlen(buf), 0, (sockaddr *)&_serveraddr, &_serverlen) == len;
+        }
+};
 
 int main(int argc, char **argv) 
 {
-    int sockfd, portno, n;
-    unsigned int serverlen;
-    struct sockaddr_in serveraddr;
-    struct hostent *server;
-    char *hostname;
-    char buf[BUFSIZE];
+    char buf[100];
 
-    /* check command line arguments */
-    if (argc != 3) {
-       fprintf(stderr,"usage: %s <hostname> <port>\n", argv[0]);
-       exit(0);
-    }
-    hostname = argv[1];
-    portno = atoi(argv[2]);
-
-    /* socket: create the socket */
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0) 
-        error("ERROR opening socket");
-
-    /* gethostbyname: get the server's DNS entry */
-    server = gethostbyname(hostname);
-    if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host as %s\n", hostname);
-        exit(0);
+    if (argc < 3) {
+        fprintf(stderr, "Usage:   %s HOST PORT\n", argv[0]);
+        fprintf(stderr, "Example: %s localhost 5000\n", argv[0]);
+        return 1;
     }
 
-    /* build the server's Internet address */
-    bzero((char *) &serveraddr, sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, 
-	  (char *)&serveraddr.sin_addr.s_addr, server->h_length);
-    serveraddr.sin_port = htons(portno);
-
-    /* get a message from the user */
-    bzero(buf, BUFSIZE);
+    bzero(buf, 100);
     printf("Please enter msg: ");
-    fgets(buf, BUFSIZE, stdin);
+    fgets(buf, 100, stdin);
 
-    /* send the message to the server */
-    serverlen = sizeof(serveraddr);
-    n = sendto(sockfd, buf, strlen(buf), 0, (const sockaddr *)&serveraddr, serverlen);
-    if (n < 0) 
-      error("ERROR in sendto");
-    
-    /* print the server's reply */
-    n = recvfrom(sockfd, buf, strlen(buf), 0, (sockaddr *)&serveraddr, &serverlen);
-    if (n < 0) 
-      error("ERROR in recvfrom");
-    printf("Echo from server: %s", buf);
+    UdpSocketClient client(argv[1], atoi(argv[2]));
+
+    client.sendData(buf, strlen(buf));
+
+    client.receiveData(buf, strlen(buf));
 
     return 0;
 }
