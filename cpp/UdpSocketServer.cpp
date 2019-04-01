@@ -13,10 +13,6 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
     int optval = 1;
     setsockopt(_sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval , sizeof(int));
 
-    bzero((char *) &_serveraddr, sizeof(_serveraddr));
-    _serveraddr.sin_family = AF_INET;
-    _serveraddr.sin_port = htons(port);
-
     _serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_sockfd, (struct sockaddr *) &_serveraddr, sizeof(_serveraddr)) < 0) {

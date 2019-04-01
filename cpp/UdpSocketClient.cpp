@@ -16,10 +16,6 @@ UdpSocketClient::UdpSocketClient(const char * host, short port) : UdpSocket(host
         exit(0);
     }
 
-    bzero((char *) &_serveraddr, sizeof(_serveraddr));
-    _serveraddr.sin_family = AF_INET;
-    _serveraddr.sin_port = htons(port);
-
     bcopy((char *)server->h_addr, (char *)&_serveraddr.sin_addr.s_addr, server->h_length);
 }
 
