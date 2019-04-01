@@ -23,15 +23,14 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
     }
 }
 
-void UdpSocketServer::receiveData(char  * buf, size_t len)
+bool UdpSocketServer::sendData(char * buf, size_t len)
 {
-    int n = recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen);
-    printf("server received %d/%d bytes: %s\n", (int)strlen(buf), n, buf);
+    return (size_t)sendto(_sockfd, buf, strlen(buf), 0, (struct sockaddr *) &_clientaddr, _clientlen) == len;
 }
 
-void UdpSocketServer::sendData(char * buf, size_t len)
+bool UdpSocketServer::receiveData(char  * buf, size_t len)
 {
-    if (sendto(_sockfd, buf, strlen(buf), 0, (struct sockaddr *) &_clientaddr, _clientlen) < 0)  {
-        error("ERROR in sendto");
-    }
+    return (size_t)recvfrom(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, &_clientlen) == len;
 }
+
+

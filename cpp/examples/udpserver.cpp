@@ -25,12 +25,8 @@ int main(int argc, char **argv)
     while (true) {
 
         char buf[100];
-
         bzero(buf, 100);
-
         server.receiveData(buf, 100);
-
-        server.sendData(buf, 100);
-
+        printf("server received: %s\n", buf);
     }
 }

@@ -21,7 +21,7 @@ class UdpSocketServer : public UdpSocket {
 
         UdpSocketServer(const char * host, short port);
 
-        void receiveData(char  * buf, size_t len);
+        bool receiveData(char  * buf, size_t len);
 
-        void sendData(char * buf, size_t len);
+        bool sendData(char * buf, size_t len);
 };

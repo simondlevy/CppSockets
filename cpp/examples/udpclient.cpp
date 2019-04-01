@@ -30,7 +30,5 @@ int main(int argc, char **argv)
 
     client.sendData(buf, strlen(buf));
 
-    client.receiveData(buf, strlen(buf));
-
     return 0;
 }
