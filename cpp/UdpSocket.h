@@ -12,5 +12,9 @@ class UdpSocket {
 
     protected:
 
+        int _sockfd;
+
+        struct sockaddr_in _serveraddr;
+
         void error(const char * msg);
 };
