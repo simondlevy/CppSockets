@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
     UdpSocketClient client(argv[1], atoi(argv[2]));
 
-    client.sendData(buf, strlen(buf));
+    client.sendData((void *)buf, strlen(buf));
 
     return 0;
 }

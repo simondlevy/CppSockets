@@ -20,7 +20,7 @@ class UdpSocketClient : public UdpSocket {
 
         UdpSocketClient(const char * host, short port);
 
-        bool sendData(char *buf, size_t len);
+        bool sendData(void * buf, size_t len);
 
-        bool receiveData(char *buf, size_t len);
+        bool receiveData(void * buf, size_t len);
 };

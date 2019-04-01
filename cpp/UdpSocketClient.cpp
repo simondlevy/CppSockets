@@ -19,12 +19,12 @@ UdpSocketClient::UdpSocketClient(const char * host, short port) : UdpSocket(host
     bcopy((char *)server->h_addr, (char *)&_serveraddr.sin_addr.s_addr, server->h_length);
 }
 
-bool UdpSocketClient::sendData(char *buf, size_t len)
+bool UdpSocketClient::sendData(void * buf, size_t len)
 {
-    return (size_t)sendto(_sockfd, buf, strlen(buf), 0, (const sockaddr *)&_serveraddr, _serverlen) == len;
+    return (size_t)sendto(_sockfd, buf, len, 0, (const sockaddr *)&_serveraddr, _serverlen) == len;
 }
 
-bool UdpSocketClient::receiveData(char *buf, size_t len)
+bool UdpSocketClient::receiveData(void * buf, size_t len)
 {
-    return (size_t)recvfrom(_sockfd, buf, strlen(buf), 0, (sockaddr *)&_serveraddr, &_serverlen) == len;
+    return (size_t)recvfrom(_sockfd, buf, len, 0, (sockaddr *)&_serveraddr, &_serverlen) == len;
 }
