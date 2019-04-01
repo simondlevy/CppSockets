@@ -22,7 +22,8 @@ UdpSocketServer::UdpSocketServer(const char * host, short port) : UdpSocket(host
 
 bool UdpSocketServer::sendData(void * buf, size_t len)
 {
-    return (size_t)sendto(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, _clientlen) == len;
+    //return (size_t)sendto(_sockfd, buf, len, 0, (struct sockaddr *) &_clientaddr, _clientlen) == len;
+    return UdpSocket::sendData(buf, len, &_clientaddr, _clientlen);
 }
 
 bool UdpSocketServer::receiveData(void * buf, size_t len)

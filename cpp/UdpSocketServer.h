@@ -15,6 +15,7 @@ class UdpSocketServer : public UdpSocket {
     private:
 
         struct sockaddr_in _clientaddr;
+
         unsigned int _clientlen = sizeof(_clientaddr);
 
     public:
