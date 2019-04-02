@@ -21,7 +21,8 @@ UdpSocketClient::UdpSocketClient(const char * host, const short port)
     if (!initWinsock()) return;
 
     // Create socket
-    if ((_s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == SOCKET_ERROR) {
+    _s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (_s == SOCKET_ERROR) {
         sprintf_s(_message, "socket() failed");
         return;
     }
@@ -35,12 +36,12 @@ UdpSocketClient::UdpSocketClient(const char * host, const short port)
 
 bool UdpSocketClient::sendData(void * buf, size_t len)
 {
-    return sendto(_s, (const char *)buf, len, 0, (struct sockaddr *) &_si_other, _slen) != SOCKET_ERROR;
+    return sendto(_s, (const char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, (int)_slen) != SOCKET_ERROR;
 }
 
 bool UdpSocketClient::receiveData(void * buf, size_t len)
 {
-    return recvfrom(_s, (char *)buf, len, 0, (struct sockaddr *) &_si_other, &_slen) != SOCKET_ERROR;
+    return recvfrom(_s, (char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, &_slen) != SOCKET_ERROR;
 }
 
 void UdpSocketClient::closeConnection(void)

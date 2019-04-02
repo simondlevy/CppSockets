@@ -36,7 +36,7 @@ class UdpSocketClient {
     private:
 
         struct sockaddr_in _si_other;
-        int _s;
+        SOCKET _s;
         socklen_t _slen = sizeof(_si_other);
 
         char _message[100];
