@@ -8,7 +8,11 @@
 
 #include "UdpSocketClient.h"
 
-UdpSocketClient::UdpSocketClient(void)
+#pragma comment(lib,"ws2_32.lib") //Winsock Library
+
+#define SERVER "127.0.0.1"	//ip address of udp server
+
+UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
     // Initialise winsock
     WSADATA wsa;
@@ -26,7 +30,7 @@ UdpSocketClient::UdpSocketClient(void)
     // Setup address structure
     memset((char *)&_si_other, 0, sizeof(_si_other));
     _si_other.sin_family = AF_INET;
-    _si_other.sin_port = htons(PORT);
+    _si_other.sin_port = htons(port);
     //si_other.sin_addr.S_un.S_addr = inet_addr(SERVER);
     InetPton(AF_INET, _T(SERVER), &_si_other.sin_addr.s_addr);
 }

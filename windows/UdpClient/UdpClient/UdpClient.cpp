@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <string.h>
 
+const char * HOST = "127.0.0.1";
+const short  PORT = 8888;
+
 #define BUFLEN 512	//Max length of buffer
 
 int main(void)
@@ -18,9 +21,8 @@ int main(void)
     char messageIn[BUFLEN];
     char messageOut[BUFLEN];
 
-    UdpSocketClient client;
+    UdpSocketClient client(HOST, PORT);
 
-    //start communication
     while (true)
     {
         printf("Enter message : ");
