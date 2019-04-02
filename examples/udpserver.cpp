@@ -8,6 +8,8 @@
 
 #include <UdpSocketServer.h>
 
+#include <string.h>
+
 const short  PORT = 8888;
 
 static const short BUFLEN = 512;
