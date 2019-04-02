@@ -6,21 +6,34 @@
  * MIT License
  */
 
-#pragma once
+#include <iostream>
+#include<stdio.h>
+#include<winsock2.h>
+#include <WS2tcpip.h>
+#include <tchar.h>
 
-#include "UdpSocket.h"
+#pragma comment(lib,"ws2_32.lib") //Winsock Library
 
-class UdpSocketClient : public UdpSocket {
+#define SERVER "127.0.0.1"	//ip address of udp server
+#define PORT 8888	//The port on which to listen for incoming data
+
+class UdpSocketClient {
 
     private:
 
-        unsigned int _serverlen = sizeof(_serveraddr);
+        struct sockaddr_in _si_other;
+        int _s;
+        int _slen = sizeof(_si_other);
+
+        char _message[100];
 
     public:
 
-        UdpSocketClient(const char * host, short port);
+        UdpSocketClient(void);
 
         bool sendData(void * buf, size_t len);
 
         bool receiveData(void * buf, size_t len);
+
+        void closeConnection(void);
 };
