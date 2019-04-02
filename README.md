@@ -1,6 +1,6 @@
 This repository contains C++ classes and example code for using sockets on
 Linux and Windows.  The classes hide the details that you don't need to worry about
-for many applications, providing a simple API for rapid prototyping; for example:
+for many applications, providing a simple API for rapid prototyping. For example:
 
 ```
     TcpSocketClient client("localhost", 5000);
