@@ -8,10 +8,6 @@
 
 #include "UdpSocketClient.h"
 
-#ifdef _WIN32
-#pragma comment(lib,"ws2_32.lib") 
-#endif
-
 UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
     // Initialize Winsock, returning on failure
@@ -19,7 +15,7 @@ UdpSocketClient::UdpSocketClient(const char * host, const short port)
 
     // Create socket
     if ((_s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == SOCKET_ERROR) {
-        sprintf_s(_message, "socket() failed with error code : %d", WSAGetLastError());
+        sprintf_s(_message, "socket() failed");
         return;
     }
 
@@ -27,11 +23,7 @@ UdpSocketClient::UdpSocketClient(const char * host, const short port)
     memset((char *)&_si_other, 0, sizeof(_si_other));
     _si_other.sin_family = AF_INET;
     _si_other.sin_port = htons(port);
-    //si_other.sin_addr.S_un.S_addr = inet_addr(SERVER);
-
-    WCHAR wsz[64];
-    swprintf_s(wsz, L"%S", host);
-    InetPton(AF_INET, wsz, &_si_other.sin_addr.s_addr);
+    setHost(host);
 }
 
 bool UdpSocketClient::sendData(void * buf, size_t len)
@@ -63,3 +55,13 @@ bool UdpSocketClient::initWinsock(void)
     return true;
 }
 
+void UdpSocketClient::setHost(const char * host)
+{
+ #ifdef _WIN32
+    WCHAR wsz[64];
+    swprintf_s(wsz, L"%S", host);
+    InetPton(AF_INET, wsz, &_si_other.sin_addr.s_addr);
+#else
+    si_other.sin_addr.S_un.S_addr = inet_addr(host);
+#endif
+}
