@@ -26,14 +26,14 @@ tcpclient: tcpclient.o TcpSocketClient.o TcpSocketCompat.o
 tcpclient.o: ../examples/tcpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
 
-udpclient: udpclient.o  UdpSocketClient.o
-	g++ -o udpclient udpclient.o UdpSocketClient.o
+udpclient: udpclient.o UdpSocketClient.o SocketCompat.o
+	g++ -o udpclient udpclient.o UdpSocketClient.o SocketCompat.o
 
 udpclient.o: ../examples/udpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
 
-udpserver: udpserver.o  UdpSocketServer.o
-	g++ -o udpserver udpserver.o UdpSocketServer.o
+udpserver: udpserver.o  UdpSocketServer.o SocketCompat.o
+	g++ -o udpserver udpserver.o UdpSocketServer.o SocketCompat.o
 
 udpserver.o: ../examples/udpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpserver.cpp
@@ -47,14 +47,17 @@ TcpSocketServer.o: ../sockets/TcpSocketServer.cpp ../sockets/TcpSocketServer.h .
 TcpSocketCompat.o: ../sockets/TcpSocketCompat.cpp ../sockets/TcpSocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/TcpSocketCompat.cpp
 
-UdpSocketClient.o: ../sockets/UdpSocketClient.cpp ../sockets/UdpSocketClient.h
+UdpSocketClient.o: ../sockets/UdpSocketClient.cpp ../sockets/UdpSocketClient.h ../sockets/SocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocketClient.cpp
 
-UdpSocketServer.o: ../sockets/UdpSocketServer.cpp ../sockets/UdpSocketServer.h
+UdpSocketServer.o: ../sockets/UdpSocketServer.cpp ../sockets/UdpSocketServer.h ../sockets/SocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocketServer.cpp
 
 UdpSocket.o: ../sockets/UdpSocket.cpp ../sockets/UdpSocket.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocket.cpp
+
+SocketCompat.o: ../sockets/SocketCompat.cpp ../sockets/SocketCompat.h
+	g++ $(CFLAGS) -c ../sockets/SocketCompat.cpp
 
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__
