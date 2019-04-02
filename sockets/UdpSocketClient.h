@@ -24,6 +24,8 @@ class UdpSocketClient {
 
         char _message[100];
 
+        bool initWinsock(void);
+
     public:
 
         UdpSocketClient(const char * host, const short port);

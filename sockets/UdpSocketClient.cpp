@@ -8,16 +8,14 @@
 
 #include "UdpSocketClient.h"
 
-#pragma comment(lib,"ws2_32.lib") //Winsock Library
+#ifdef _WIN32
+#pragma comment(lib,"ws2_32.lib") 
+#endif
 
 UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
-    // Initialise winsock
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        sprintf_s(_message, "Failed. Error Code : %d", WSAGetLastError());
-        return;
-    }
+    // Initialize Winsock, returning on failure
+    if (!initWinsock()) return;
 
     // Create socket
     if ((_s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == SOCKET_ERROR) {
@@ -51,3 +49,17 @@ void UdpSocketClient::closeConnection(void)
     closesocket(_s);
     WSACleanup();
 }
+
+bool UdpSocketClient::initWinsock(void)
+{
+#ifdef _WIN32
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != 0) {
+        sprintf_s(_message, "WSAStartup() failed with error: %d\n", iResult);
+        return false;
+    }
+#endif
+    return true;
+}
+
