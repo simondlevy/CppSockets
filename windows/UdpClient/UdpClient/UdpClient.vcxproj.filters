@@ -29,5 +29,8 @@
     <ClCompile Include="..\..\..\sockets\SocketCompat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\sockets\UdpSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

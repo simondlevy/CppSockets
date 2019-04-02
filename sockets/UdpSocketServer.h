@@ -8,23 +8,11 @@
 
 #pragma once
 
-#include "SocketCompat.h"
+#include "UdpSocket.h"
 
-class UdpSocketServer : public Socket {
-
-    private:
-
-        struct sockaddr_in _si_other;
-        socklen_t _slen = sizeof(_si_other);
-
-        struct sockaddr_in _server;
-        socklen_t _recv_len;
+class UdpSocketServer : public UdpSocket {
 
     public:
 
         UdpSocketServer(const short port);
-
-        bool sendData(void * buf, size_t len);
-
-        bool receiveData(void * buf, size_t len);
 };
