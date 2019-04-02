@@ -1,13 +1,4 @@
-/*
-	Simple UDP Server
-	Silver Moon ( m00n.silv3r@gmail.com )
-*/
-
-
-#include "pch.h"
 #include <iostream>
-
-
 #include<stdio.h>
 #include<winsock2.h>
 
