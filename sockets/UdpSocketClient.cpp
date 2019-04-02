@@ -8,6 +8,11 @@
 
 #include "UdpSocketClient.h"
 
+#ifndef _WIN32
+static void WSACleanup(void) { }
+static void closesocket(int socket) { close(socket); }
+#endif
+
 UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
     // Initialize Winsock, returning on failure

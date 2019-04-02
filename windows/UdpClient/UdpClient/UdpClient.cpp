@@ -14,7 +14,7 @@
 const char * HOST = "127.0.0.1";
 const short  PORT = 8888;
 
-#define BUFLEN 512	//Max length of buffer
+static const short BUFLEN = 512;
 
 int main(void)
 {
