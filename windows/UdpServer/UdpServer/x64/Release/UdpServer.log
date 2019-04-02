@@ -1,1 +1,6 @@
-﻿
+﻿  pch.cpp
+  UdpServer.cpp
+  Generating code
+  All 4 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  UdpServer.vcxproj -> C:\Users\owner\Desktop\CppSockets\windows\UdpServer\x64\Release\UdpServer.exe

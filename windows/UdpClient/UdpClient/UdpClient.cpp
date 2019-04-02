@@ -16,21 +16,19 @@
 #define BUFLEN 512	//Max length of buffer
 #define PORT 8888	//The port on which to listen for incoming data
 
-class UdpSocketServer {
+class UdpSocketClient {
 
-    private:
+    public:
 
         struct sockaddr_in _si_other;
         int _s;
         int _slen = sizeof(_si_other);
-        char buf[BUFLEN];
-        char message[BUFLEN];
 
         char _message[100];
 
     public:
 
-        UdpSocketServer(const char * host, short port)
+        UdpSocketClient(void)
         {
             // Initialise winsock
             WSADATA wsa;
@@ -66,11 +64,10 @@ class UdpSocketServer {
 
 int main(void)
 {
-    struct sockaddr_in si_other;
-    int s, slen = sizeof(si_other);
     char buf[BUFLEN];
     char message[BUFLEN];
-    WSADATA wsa;
+
+    /*
 
     //Initialise winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -92,6 +89,10 @@ int main(void)
     si_other.sin_port = htons(PORT);
     //si_other.sin_addr.S_un.S_addr = inet_addr(SERVER);
     InetPton(AF_INET, _T(SERVER), &si_other.sin_addr.s_addr);
+    */
+
+    UdpSocketClient client;
+
 
     //start communication
     while (true)
@@ -100,7 +101,7 @@ int main(void)
         gets_s(message);
 
         //send the message
-        if (sendto(s, message, strlen(message), 0, (struct sockaddr *) &si_other, slen) == SOCKET_ERROR)
+        if (sendto(client._s, message, strlen(message), 0, (struct sockaddr *) &client._si_other, client._slen) == SOCKET_ERROR)
         {
             printf("sendto() failed with error code : %d", WSAGetLastError());
             exit(EXIT_FAILURE);
@@ -110,7 +111,7 @@ int main(void)
         //clear the buffer by filling null, it might have previously received data
         memset(buf, '\0', BUFLEN);
         //try to receive some data, this is a blocking call
-        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == SOCKET_ERROR)
+        if (recvfrom(client._s, buf, BUFLEN, 0, (struct sockaddr *) &client._si_other, &client._slen) == SOCKET_ERROR)
         {
             printf("recvfrom() failed with error code : %d", WSAGetLastError());
             exit(EXIT_FAILURE);
@@ -119,7 +120,7 @@ int main(void)
         puts(buf);
     }
 
-    closesocket(s);
+    closesocket(client._s);
     WSACleanup();
 
     return 0;
