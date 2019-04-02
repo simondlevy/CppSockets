@@ -1,20 +1,15 @@
 /*
- * TcpSocketCompat.cpp: cross-platform compatibility superclass for sockets
+ * TcpSocket.cpp: cross-platform compatibility superclass for sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "TcpSocketCompat.h"
-
-#ifndef _WIN32
-static void WSACleanup(void) { }
-static void closesocket(int socket) { close(socket); }
-#endif
+#include "TcpSocket.h"
 
 // Called once on main thread
-TcpSocketCompat::TcpSocketCompat(const char * host, const short port) 
+TcpSocket::TcpSocket(const char * host, const short port) 
 {
     sprintf_s(_host, "%s", host);
     sprintf_s(_port, "%d", port);
@@ -37,7 +32,7 @@ TcpSocketCompat::TcpSocketCompat(const char * host, const short port)
     int iResult = getaddrinfo(_host, _port, &hints, &_addressInfo);
     if ( iResult != 0 ) {
         sprintf_s(_message, "getaddrinfo() failed with error: %d", iResult);
-        WSACleanup();
+        cleanup();
         return;
     }
 
@@ -45,45 +40,22 @@ TcpSocketCompat::TcpSocketCompat(const char * host, const short port)
     _sock = socket(_addressInfo->ai_family, _addressInfo->ai_socktype, _addressInfo->ai_protocol);
     if (_sock == INVALID_SOCKET) {
         sprintf_s(_message, "socket() failed");
-        WSACleanup();
+        cleanup();
         return;
     }
 }
 
-void TcpSocketCompat::closeConnection(void)
-{
-    closesocket(_conn);
-}
-
-bool TcpSocketCompat::isConnected(void)
+bool TcpSocket::isConnected(void)
 {
     return _connected;
 }
 
-char * TcpSocketCompat::getMessage(void)
-{
-    return _message;
-}
-
-bool TcpSocketCompat::initWinsock(void)
-{
-#ifdef _WIN32
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != 0) {
-        sprintf_s(_message, "WSAStartup() failed with error: %d\n", iResult);
-        return false;
-    }
-#endif
-    return true;
-}
-
-bool TcpSocketCompat::sendData(void *buf, size_t len)
+bool TcpSocket::sendData(void *buf, size_t len)
 {
     return (size_t)send(_conn, (const char *)buf, len, 0) == len;
 }
 
-bool TcpSocketCompat::receiveData(void *buf, size_t len)
+bool TcpSocket::receiveData(void *buf, size_t len)
 {
     return (size_t)recv(_conn, (char *)buf, len, 0) == len;
 }

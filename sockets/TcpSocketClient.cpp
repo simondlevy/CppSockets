@@ -14,7 +14,7 @@ static void closesocket(int socket) { close(socket); }
 
 
 // Called once on main thread
-TcpSocketClient::TcpSocketClient(const char * host, const short port) : TcpSocketCompat(host, port)
+TcpSocketClient::TcpSocketClient(const char * host, const short port) : TcpSocket(host, port)
 {
 }
 

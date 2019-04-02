@@ -8,11 +8,6 @@
 
 #include "SocketCompat.h"
 
-#ifndef _WIN32
-static void WSACleanup(void) { }
-static void closesocket(int socket) { close(socket); }
-#endif
-
 char * Socket::getMessage(void)
 {
     return _message;
@@ -20,8 +15,18 @@ char * Socket::getMessage(void)
 
 void Socket::closeConnection(void)
 {
+#ifdef _WIN32
     closesocket(_sock);
+#else
+    close(_sock);
+#endif
+}
+
+void Socket::cleanup(void)
+{
+#ifdef _WIN32
     WSACleanup();
+#endif
 }
 
 bool Socket::initWinsock(void)

@@ -12,7 +12,7 @@
 static void closesocket(int socket) { close(socket); }
 #endif
 
-TcpSocketServer::TcpSocketServer(const char * host, short port) : TcpSocketCompat(host, port)
+TcpSocketServer::TcpSocketServer(const char * host, short port) : TcpSocket(host, port)
 {
     // Bind socket to address
     if (bind(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen) == SOCKET_ERROR) {

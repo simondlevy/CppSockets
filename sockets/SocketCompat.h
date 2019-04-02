@@ -24,6 +24,7 @@ typedef int SOCKET;
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 static const int INVALID_SOCKET = -1;
 static const int SOCKET_ERROR   = -1;
 #endif
@@ -39,6 +40,8 @@ class Socket {
         char _message[200];
 
         bool initWinsock(void);
+
+        void cleanup(void);
 
     public:
 

@@ -10,12 +10,6 @@
 
 #include <string.h>
 
-#ifndef _WIN32
-static void WSACleanup(void) { }
-static void closesocket(int socket) { close(socket); }
-#include <arpa/inet.h>
-#endif
-
 UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
     // Initialize Winsock, returning on failure

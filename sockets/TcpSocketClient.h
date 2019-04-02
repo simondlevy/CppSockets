@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "TcpSocketCompat.h"
+#include "TcpSocket.h"
 
-class TcpSocketClient : public TcpSocketCompat {
+class TcpSocketClient : public TcpSocket {
 
     public:
 
