@@ -7,74 +7,83 @@
 #define BUFLEN 512	//Max length of buffer
 #define PORT 8888	//The port on which to listen for incoming data
 
+class UdpSocketServer {
+
+    private:
+
+        SOCKET _s;
+        struct sockaddr_in _server;
+        struct sockaddr_in _si_other;
+        int _recv_len;
+        int _slen = sizeof(_si_other);
+        char _message[100];
+
+    public:
+
+        UdpSocketServer(const short port)
+        {
+            WSADATA wsa;
+            if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+                sprintf_s(_message, "Failed. Error Code : %d", WSAGetLastError());
+                return;
+            }
+
+            _s = socket(AF_INET, SOCK_DGRAM, 0);
+            if (_s == INVALID_SOCKET) {
+                sprintf_s(_message, "socket() failed");
+                return;
+            }
+
+            // Prepare the sockaddr_in structure
+            _server.sin_family = AF_INET;
+            _server.sin_addr.s_addr = INADDR_ANY;
+            _server.sin_port = htons(port);
+
+            // Bind
+            if (bind(_s, (struct sockaddr *)&_server, sizeof(_server)) == SOCKET_ERROR) {
+                sprintf_s(_message, "bind() failed");
+                return;
+            }
+        }
+
+        bool sendData(void * buf, size_t len)
+        {
+            return sendto(_s, (const char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, (int)_slen) != SOCKET_ERROR;
+        }
+
+        bool receiveData(void * buf, size_t len)
+        {
+            return recvfrom(_s, (char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, &_slen) != SOCKET_ERROR;
+        }
+
+        void closeConnection(void)
+        {
+            closesocket(_s);
+            WSACleanup();
+        }
+};
+
 int main()
 {
-	SOCKET s;
-	struct sockaddr_in server, si_other;
-	int slen, recv_len;
-	char buf[BUFLEN];
-	WSADATA wsa;
+    char buf[BUFLEN];
 
-	slen = sizeof(si_other);
+    UdpSocketServer server(PORT);
 
-	//Initialise winsock
-	printf("\nInitialising Winsock...");
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-	{
-		printf("Failed. Error Code : %d", WSAGetLastError());
-		exit(EXIT_FAILURE);
-	}
-	printf("Initialised.\n");
+    while (true) {
 
-	//Create a socket
-	if ((s = socket(AF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET)
-	{
-		printf("Could not create socket : %d", WSAGetLastError());
-	}
-	printf("Socket created.\n");
+        printf("Waiting for data...");
+        fflush(stdout);
 
-	//Prepare the sockaddr_in structure
-	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = INADDR_ANY;
-	server.sin_port = htons(PORT);
+        memset(buf, 0, BUFLEN);
 
-	//Bind
-	if (bind(s, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
-	{
-		printf("Bind failed with error code : %d", WSAGetLastError());
-		exit(EXIT_FAILURE);
-	}
-	puts("Bind done");
+        server.receiveData(buf, BUFLEN);
 
-	//keep listening for data
-	while (1)
-	{
-		printf("Waiting for data...");
-		fflush(stdout);
+        printf("Data: %s\n", buf);
 
-		//clear the buffer by filling null, it might have previously received data
-		memset(buf, '\0', BUFLEN);
+        server.sendData(buf, strlen(buf));
+    }
 
-		//try to receive some data, this is a blocking call
-		if ((recv_len = recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == SOCKET_ERROR)
-		{
-			printf("recvfrom() failed with error code : %d", WSAGetLastError());
-			exit(EXIT_FAILURE);
-		}
+    server.closeConnection();
 
-		//print details of the client/peer and the data received
-		printf("Data: %s\n", buf);
-
-		//now reply the client with the same data
-		if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &si_other, slen) == SOCKET_ERROR)
-		{
-			printf("sendto() failed with error code : %d", WSAGetLastError());
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	closesocket(s);
-	WSACleanup();
-
-	return 0;
+    return 0;
 }
