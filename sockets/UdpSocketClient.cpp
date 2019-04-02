@@ -10,8 +10,6 @@
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 
-#define SERVER "127.0.0.1"	//ip address of udp server
-
 UdpSocketClient::UdpSocketClient(const char * host, const short port)
 {
     // Initialise winsock
@@ -32,7 +30,10 @@ UdpSocketClient::UdpSocketClient(const char * host, const short port)
     _si_other.sin_family = AF_INET;
     _si_other.sin_port = htons(port);
     //si_other.sin_addr.S_un.S_addr = inet_addr(SERVER);
-    InetPton(AF_INET, _T(SERVER), &_si_other.sin_addr.s_addr);
+
+    WCHAR wsz[64];
+    swprintf_s(wsz, L"%S", host);
+    InetPton(AF_INET, wsz, &_si_other.sin_addr.s_addr);
 }
 
 bool UdpSocketClient::sendData(void * buf, size_t len)
