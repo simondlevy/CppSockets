@@ -8,6 +8,8 @@
 
 #include "UdpSocketClient.h"
 
+#include <string.h>
+
 #ifndef _WIN32
 static void WSACleanup(void) { }
 static void closesocket(int socket) { close(socket); }
@@ -65,8 +67,8 @@ void UdpSocketClient::setHost(const char * host)
  #ifdef _WIN32
     WCHAR wsz[64];
     swprintf_s(wsz, L"%S", host);
-    InetPton(AF_INET, wsz, &_si_other.sin_addr.s_addr);
+    InetPton(AF_INET, wsz, &(_si_other.sin_addr.s_addr));
 #else
-    si_other.sin_addr.S_un.S_addr = inet_addr(host);
+    inet_pton(AF_INET, host, &(_si_other.sin_addr));
 #endif
 }

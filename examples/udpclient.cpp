@@ -1,5 +1,5 @@
 /*
- * UdpClient.cpp test code for UDP client sockets
+ * udpclient.cpp test code for UDP client sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
@@ -26,7 +26,7 @@ int main(void)
     while (true)
     {
         printf("Enter message : ");
-        gets_s(messageOut);
+        fgets(messageOut, BUFLEN, stdin);
 
         client.sendData(messageOut, strlen(messageOut));
 
@@ -34,7 +34,7 @@ int main(void)
 
         client.receiveData(messageIn, BUFLEN);
 
-        puts(messageIn);
+        printf("%s\n", messageIn);
     }
 
     client.closeConnection();
