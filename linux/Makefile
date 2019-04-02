@@ -6,7 +6,7 @@
 # MIT License
 # 
 
-ALL = tcpserver tcpclient udpserver udpclient
+ALL = tcpserver tcpclient udpclient
 
 all: $(ALL)
 
@@ -17,26 +17,23 @@ all: $(ALL)
 tcpserver: tcpserver.o TcpSocketServer.o TcpSocketCompat.o 
 	g++ -o tcpserver tcpserver.o TcpSocketServer.o TcpSocketCompat.o 
 
-tcpserver.o: tcpserver.cpp
-	g++ $(CFLAGS) -I../sockets -c tcpserver.cpp
+tcpserver.o: ../examples/tcpserver.cpp
+	g++ $(CFLAGS) -I../sockets -c ../examples/tcpserver.cpp
 
 tcpclient: tcpclient.o TcpSocketClient.o TcpSocketCompat.o 
 	g++ -o tcpclient tcpclient.o TcpSocketClient.o TcpSocketCompat.o 
 
-tcpclient.o: tcpclient.cpp
-	g++ $(CFLAGS) -I../sockets -c tcpclient.cpp
+tcpclient.o: ../examples/tcpclient.cpp
+	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
 
 udpserver: udpserver.o UdpSocketServer.o UdpSocket.o
 	g++ -o udpserver udpserver.o UdpSocketServer.o UdpSocket.o
 
-udpserver.o: udpserver.cpp 
-	g++ $(CFLAGS) -I../sockets -c udpserver.cpp
-
 udpclient: udpclient.o  UdpSocketClient.o UdpSocket.o
 	g++ -o udpclient udpclient.o UdpSocketClient.o UdpSocket.o
 
-udpclient.o: udpclient.cpp
-	g++ $(CFLAGS) -I../sockets -c udpclient.cpp
+udpclient.o: ../examples/udpclient.cpp
+	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
 
 TcpSocketClient.o: ../sockets/TcpSocketClient.cpp ../sockets/TcpSocketClient.h ../sockets/TcpSocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/TcpSocketClient.cpp
@@ -46,9 +43,6 @@ TcpSocketServer.o: ../sockets/TcpSocketServer.cpp ../sockets/TcpSocketServer.h .
 
 TcpSocketCompat.o: ../sockets/TcpSocketCompat.cpp ../sockets/TcpSocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/TcpSocketCompat.cpp
-
-UdpSocketServer.o: ../sockets/UdpSocketServer.cpp ../sockets/UdpSocketServer.h
-	g++ $(CFLAGS) -c ../sockets/UdpSocketServer.cpp
 
 UdpSocketClient.o: ../sockets/UdpSocketClient.cpp ../sockets/UdpSocketClient.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocketClient.cpp

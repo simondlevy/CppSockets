@@ -155,8 +155,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\examples\udpclient.cpp" />
     <ClCompile Include="..\..\..\sockets\UdpSocketClient.cpp" />
-    <ClCompile Include="UdpClient.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

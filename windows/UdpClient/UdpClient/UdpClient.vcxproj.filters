@@ -20,10 +20,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UdpClient.cpp">
+    <ClCompile Include="..\..\..\sockets\UdpSocketClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\sockets\UdpSocketClient.cpp">
+    <ClCompile Include="..\..\..\examples\udpclient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
