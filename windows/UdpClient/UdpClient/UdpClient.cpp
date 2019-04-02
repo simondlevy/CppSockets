@@ -18,7 +18,7 @@
 
 class UdpSocketClient {
 
-    public:
+    private:
 
         struct sockaddr_in _si_other;
         int _s;
@@ -60,12 +60,18 @@ class UdpSocketClient {
         {
             return recvfrom(_s, (char *)buf, len, 0, (struct sockaddr *) &_si_other, &_slen) != SOCKET_ERROR;
         }
+
+        void closeConnection(void)
+        {
+            closesocket(_s);
+            WSACleanup();
+        }
 };
 
 int main(void)
 {
-    char buf[BUFLEN];
-    char message[BUFLEN];
+    char messageIn[BUFLEN];
+    char messageOut[BUFLEN];
 
     UdpSocketClient client;
 
@@ -73,19 +79,18 @@ int main(void)
     while (true)
     {
         printf("Enter message : ");
-        gets_s(message);
+        gets_s(messageOut);
 
-        client.sendData(message, strlen(message));
+        client.sendData(messageOut, strlen(messageOut));
 
-        memset(buf, '\0', BUFLEN);
+        *messageIn = 0;
 
-        client.receiveData(buf, BUFLEN);
+        client.receiveData(messageIn, BUFLEN);
 
-        puts(buf);
+        puts(messageIn);
     }
 
-    closesocket(client._s);
-    WSACleanup();
+    client.closeConnection();
 
     return 0;
 }
