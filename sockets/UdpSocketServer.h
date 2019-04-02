@@ -38,9 +38,12 @@ class UdpSocketServer {
         SOCKET _s;
         struct sockaddr_in _server;
         struct sockaddr_in _si_other;
-        int _recv_len;
-        int _slen = sizeof(_si_other);
+        socklen_t _recv_len;
+        socklen_t _slen = sizeof(_si_other);
+
         char _message[100];
+
+        bool initWinsock(void);
 
     public:
 

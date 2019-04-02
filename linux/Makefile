@@ -6,7 +6,7 @@
 # MIT License
 # 
 
-ALL = tcpserver tcpclient udpclient
+ALL = tcpserver tcpclient udpclient udpserver
 
 all: $(ALL)
 
@@ -32,6 +32,9 @@ udpclient: udpclient.o  UdpSocketClient.o
 udpclient.o: ../examples/udpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
 
+udpserver: udpserver.o  UdpSocketServer.o
+	g++ -o udpserver udpserver.o UdpSocketServer.o
+
 udpserver.o: ../examples/udpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpserver.cpp
 
@@ -46,6 +49,9 @@ TcpSocketCompat.o: ../sockets/TcpSocketCompat.cpp ../sockets/TcpSocketCompat.h
 
 UdpSocketClient.o: ../sockets/UdpSocketClient.cpp ../sockets/UdpSocketClient.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocketClient.cpp
+
+UdpSocketServer.o: ../sockets/UdpSocketServer.cpp ../sockets/UdpSocketServer.h
+	g++ $(CFLAGS) -c ../sockets/UdpSocketServer.cpp
 
 UdpSocket.o: ../sockets/UdpSocket.cpp ../sockets/UdpSocket.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocket.cpp
