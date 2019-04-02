@@ -14,9 +14,3 @@ linux/*client
 Debug/
 windows/*/*/x64/
 windows/*/x64/
-windows/*/*/x64/Release/*.obj
-windows/*/*/x64/Release/*.pch
-windows/*/*/x64/Release/*.tlog/
-windows/*/*/x64/Release/pch.obj
-windows/*/*/x64/Release/vc141.pdb
-windows/*/x64/
