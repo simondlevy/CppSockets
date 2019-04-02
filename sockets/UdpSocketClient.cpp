@@ -41,11 +41,5 @@ bool UdpSocketClient::receiveData(void * buf, size_t len)
 
 void UdpSocketClient::setHost(const char * host)
 {
- #ifdef _WIN32
-    WCHAR wsz[64];
-    swprintf_s(wsz, L"%S", host);
-    InetPton(AF_INET, wsz, &(_si_other.sin_addr.s_addr));
-#else
-    inet_pton(AF_INET, host, &(_si_other.sin_addr));
-#endif
+    Socket::inetPton(host, _si_other);
 }

@@ -41,3 +41,14 @@ bool Socket::initWinsock(void)
 #endif
     return true;
 }
+
+void Socket::inetPton(const char * host, struct sockaddr_in & saddr_in)
+{
+ #ifdef _WIN32
+    WCHAR wsz[64];
+    swprintf_s(wsz, L"%S", host);
+    InetPton(AF_INET, wsz,   &(saddr_in.sin_addr.s_addr));
+#else
+    inet_pton(AF_INET, host, &(saddr_in.sin_addr));
+#endif
+}

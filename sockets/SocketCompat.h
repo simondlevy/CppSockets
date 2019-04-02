@@ -43,6 +43,8 @@ class Socket {
 
         void cleanup(void);
 
+        void inetPton(const char * host, struct sockaddr_in & saddr_in);
+
     public:
 
         void closeConnection(void);
