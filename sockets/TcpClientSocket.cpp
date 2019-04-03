@@ -1,12 +1,12 @@
 /*
- * TcpSocketClient.cpp: Class for TCP socket clients
+ * TcpClientSocket.cpp: Class for TCP socket clients
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "TcpSocketClient.h"
+#include "TcpClientSocket.h"
 
 #ifndef _WIN32
 static void closesocket(int socket) { close(socket); }
@@ -14,11 +14,11 @@ static void closesocket(int socket) { close(socket); }
 
 
 // Called once on main thread
-TcpSocketClient::TcpSocketClient(const char * host, const short port) : TcpSocket(host, port)
+TcpClientSocket::TcpClientSocket(const char * host, const short port) : TcpSocket(host, port)
 {
 }
 
-void TcpSocketClient::openConnection(void)
+void TcpClientSocket::openConnection(void)
 {
     // Connect to server, returning on failure
     if (connect(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen) == SOCKET_ERROR) {

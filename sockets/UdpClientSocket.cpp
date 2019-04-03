@@ -1,16 +1,16 @@
 /*
- * UdpSocketClient.cpp code for UDP client sockets
+ * UdpClientSocket.cpp code for UDP client sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "UdpSocketClient.h"
+#include "UdpClientSocket.h"
 
 #include <string.h>
 
-UdpSocketClient::UdpSocketClient(const char * host, const short port)
+UdpClientSocket::UdpClientSocket(const char * host, const short port)
 {
     // Initialize Winsock, returning on failure
     if (!initWinsock()) return;

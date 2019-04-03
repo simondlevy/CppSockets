@@ -1,14 +1,14 @@
 /*
- * UdpSocketServer.cpp: code for UDP server sockets
+ * UdpServerSocket.cpp: code for UDP server sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "UdpSocketServer.h"
+#include "UdpServerSocket.h"
 
-UdpSocketServer::UdpSocketServer(const short port)
+UdpServerSocket::UdpServerSocket(const short port)
 {
     // Initialize Winsock, returning on failure
     if (!initWinsock()) return;

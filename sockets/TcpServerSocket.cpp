@@ -1,18 +1,18 @@
 /*
- * TcpSocketServer.cpp: general-purpose socket server code
+ * TcpServerSocket.cpp: general-purpose socket server code
  *
  * Copyright (C) 2019 Simon D. Levy
  *
  * MIT License
  */
 
-#include "TcpSocketServer.h"
+#include "TcpServerSocket.h"
 
 #ifndef _WIN32
 static void closesocket(int socket) { close(socket); }
 #endif
 
-TcpSocketServer::TcpSocketServer(const char * host, short port) : TcpSocket(host, port)
+TcpServerSocket::TcpServerSocket(const char * host, short port) : TcpSocket(host, port)
 {
     // Bind socket to address
     if (bind(_sock, _addressInfo->ai_addr, (int)_addressInfo->ai_addrlen) == SOCKET_ERROR) {
@@ -23,7 +23,7 @@ TcpSocketServer::TcpSocketServer(const char * host, short port) : TcpSocket(host
     }
 }
 
-void TcpSocketServer::acceptConnection(void)
+void TcpServerSocket::acceptConnection(void)
 {
     // Listen for a connection, exiting on failure
     if (listen(_sock, 1)  == -1) {

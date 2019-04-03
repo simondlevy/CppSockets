@@ -20,9 +20,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\sockets\UdpSocketClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\examples\udpclient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,6 +27,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\sockets\UdpSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sockets\UdpClientSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

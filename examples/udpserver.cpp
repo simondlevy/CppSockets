@@ -6,7 +6,7 @@
  * MIT License
  */
 
-#include <UdpSocketServer.h>
+#include <UdpServerSocket.h>
 
 #include <string.h>
 
@@ -18,7 +18,7 @@ int main()
 {
     char buf[BUFLEN];
 
-    UdpSocketServer server(PORT);
+    UdpServerSocket server(PORT);
 
     while (true) {
 

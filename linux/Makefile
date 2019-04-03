@@ -14,44 +14,44 @@ CFLAGS = -Wall -std=c++11
 
 all: $(ALL)
 
-tcpserver: tcpserver.o TcpSocketServer.o TcpSocket.o SocketCompat.o
-	g++ -o tcpserver tcpserver.o TcpSocketServer.o TcpSocket.o SocketCompat.o
+tcpserver: tcpserver.o TcpServerSocket.o TcpSocket.o SocketCompat.o
+	g++ -o tcpserver tcpserver.o TcpServerSocket.o TcpSocket.o SocketCompat.o
 
 tcpserver.o: ../examples/tcpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpserver.cpp
 
-tcpclient: tcpclient.o TcpSocketClient.o TcpSocket.o SocketCompat.o
-	g++ -o tcpclient tcpclient.o TcpSocketClient.o TcpSocket.o SocketCompat.o
+tcpclient: tcpclient.o TcpClientSocket.o TcpSocket.o SocketCompat.o
+	g++ -o tcpclient tcpclient.o TcpClientSocket.o TcpSocket.o SocketCompat.o
 
 tcpclient.o: ../examples/tcpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
 
-udpclient: udpclient.o UdpSocketClient.o SocketCompat.o UdpSocket.o
-	g++ -o udpclient udpclient.o UdpSocketClient.o SocketCompat.o UdpSocket.o
+udpclient: udpclient.o UdpClientSocket.o SocketCompat.o UdpSocket.o
+	g++ -o udpclient udpclient.o UdpClientSocket.o SocketCompat.o UdpSocket.o
 
 udpclient.o: ../examples/udpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
 
-udpserver: udpserver.o  UdpSocketServer.o SocketCompat.o UdpSocket.o
-	g++ -o udpserver udpserver.o UdpSocketServer.o SocketCompat.o UdpSocket.o
+udpserver: udpserver.o  UdpServerSocket.o SocketCompat.o UdpSocket.o
+	g++ -o udpserver udpserver.o UdpServerSocket.o SocketCompat.o UdpSocket.o
 
 udpserver.o: ../examples/udpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpserver.cpp
 
-TcpSocketClient.o: ../sockets/TcpSocketClient.cpp ../sockets/TcpSocketClient.h ../sockets/TcpSocket.h
-	g++ $(CFLAGS) -c ../sockets/TcpSocketClient.cpp
+TcpClientSocket.o: ../sockets/TcpClientSocket.cpp ../sockets/TcpClientSocket.h ../sockets/TcpSocket.h
+	g++ $(CFLAGS) -c ../sockets/TcpClientSocket.cpp
 
-TcpSocketServer.o: ../sockets/TcpSocketServer.cpp ../sockets/TcpSocketServer.h ../sockets/TcpSocket.h
-	g++ $(CFLAGS) -c ../sockets/TcpSocketServer.cpp
+TcpServerSocket.o: ../sockets/TcpServerSocket.cpp ../sockets/TcpServerSocket.h ../sockets/TcpSocket.h
+	g++ $(CFLAGS) -c ../sockets/TcpServerSocket.cpp
 
 TcpSocket.o: ../sockets/TcpSocket.cpp ../sockets/TcpSocket.h
 	g++ $(CFLAGS) -c ../sockets/TcpSocket.cpp
 
-UdpSocketClient.o: ../sockets/UdpSocketClient.cpp ../sockets/UdpSocketClient.h ../sockets/SocketCompat.h
-	g++ $(CFLAGS) -c ../sockets/UdpSocketClient.cpp
+UdpClientSocket.o: ../sockets/UdpClientSocket.cpp ../sockets/UdpClientSocket.h ../sockets/SocketCompat.h
+	g++ $(CFLAGS) -c ../sockets/UdpClientSocket.cpp
 
-UdpSocketServer.o: ../sockets/UdpSocketServer.cpp ../sockets/UdpSocketServer.h ../sockets/SocketCompat.h
-	g++ $(CFLAGS) -c ../sockets/UdpSocketServer.cpp
+UdpServerSocket.o: ../sockets/UdpServerSocket.cpp ../sockets/UdpServerSocket.h ../sockets/SocketCompat.h
+	g++ $(CFLAGS) -c ../sockets/UdpServerSocket.cpp
 
 UdpSocket.o: ../sockets/UdpSocket.cpp ../sockets/UdpSocket.h
 	g++ $(CFLAGS) -c ../sockets/UdpSocket.cpp

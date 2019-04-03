@@ -6,7 +6,7 @@
  * MIT License
  */
 
-#include <UdpSocketClient.h>
+#include <UdpClientSocket.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +21,7 @@ int main(void)
     char messageIn[BUFLEN];
     char messageOut[BUFLEN];
 
-    UdpSocketClient client(HOST, PORT);
+    UdpClientSocket client(HOST, PORT);
 
     while (true)
     {
