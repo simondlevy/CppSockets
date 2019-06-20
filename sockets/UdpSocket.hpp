@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "SocketCompat.h"
+#include "SocketCompat.hpp"
 
 class UdpSocket : public Socket {
 

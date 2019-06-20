@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "SocketCompat.h"
+#include "SocketCompat.hpp"
 
 class TcpSocket : public Socket {
 
