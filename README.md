@@ -36,6 +36,6 @@ Then open the <b>UdpClient</b> and <b>UdpServer</b> projects, and run them in Re
 % git clone https://github.com/simondlevy/CppSockets sockets
 % make
 ```
-Then you can run one of the two pairs of results programs (<b>udpsever</b>/<b>udpclient</b>, 
+Then you can run one of the two pairs of resulting test programs (<b>udpsever</b>/<b>udpclient</b>, 
 <b>tcpsever</b>/<b>tcpclient</b>).
 
