@@ -1,5 +1,5 @@
 /*
- * SocketCompat.h: cross-platform compatibility superclass for sockets
+ * Cross-platform compatibility superclass for sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *

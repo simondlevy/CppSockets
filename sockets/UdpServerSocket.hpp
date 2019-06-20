@@ -1,5 +1,5 @@
 /*
- * UdpServerSocket.h: class for UDP server sockets
+ * Class for UDP server sockets
  *
  * Copyright (C) 2019 Simon D. Levy
  *

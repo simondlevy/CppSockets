@@ -20,8 +20,8 @@ tcpserver: tcpserver.o SocketCompat.o
 tcpserver.o: ../examples/tcpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpserver.cpp
 
-tcpclient: tcpclient.o TcpClientSocket.o SocketCompat.o
-	g++ -o tcpclient tcpclient.o TcpClientSocket.o SocketCompat.o
+tcpclient: tcpclient.o SocketCompat.o
+	g++ -o tcpclient tcpclient.o SocketCompat.o
 
 tcpclient.o: ../examples/tcpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
@@ -37,9 +37,6 @@ udpserver: udpserver.o  SocketCompat.o
 
 udpserver.o: ../examples/udpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpserver.cpp
-
-TcpClientSocket.o: ../sockets/TcpClientSocket.cpp ../sockets/TcpClientSocket.h ../sockets/TcpSocket.hpp
-	g++ $(CFLAGS) -c ../sockets/TcpClientSocket.cpp
 
 SocketCompat.o: ../sockets/SocketCompat.cpp ../sockets/SocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/SocketCompat.cpp
