@@ -27,3 +27,15 @@ into your own project.
 ```
 
 Then open the <b>UdpClient</b> and <b>UdpServer</b> projects, and run them in Release mode.
+
+## Testing on Linux
+
+```
+% git clone -b test_linux https://github.com/simondlevy/CppSockets
+% cd CppSockets
+% git clone https://github.com/simondlevy/CppSockets sockets
+% make
+```
+Then you can run one of the two pairs of results programs (<b>udpsever</b>/<b>udpclient</b>, 
+<b>tcpsever</b>/<b>tcpclient</b>).
+
