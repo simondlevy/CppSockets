@@ -19,14 +19,19 @@ class UdpSocket : public Socket {
 
     public:
 
-        bool sendData(void * buf, size_t len)
+        void setTimeoutMsec(uint32_t msec)
         {
-            return sendto(_sock, (const char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, (int)_slen) != SOCKET_ERROR;
+            Socket::setUdpTimeout(msec);
+        }
+
+        void sendData(void * buf, size_t len)
+        {
+            sendto(_sock, (const char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, (int)_slen);
 
         }
 
-        bool receiveData(void * buf, size_t len)
+        void receiveData(void * buf, size_t len)
         {
-            return recvfrom(_sock, (char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, &_slen) != SOCKET_ERROR;
+            recvfrom(_sock, (char *)buf, (int)len, 0, (struct sockaddr *) &_si_other, &_slen);
         }
 };
