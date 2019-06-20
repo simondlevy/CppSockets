@@ -9,16 +9,17 @@
 #include <UdpServerSocket.hpp>
 
 #include <string.h>
+#include <unistd.h>
 
-const short  PORT = 8888;
-
-static const short BUFLEN = 512;
+const short           PORT         = 8888;
+static const short    BUFLEN       = 512;
+static const uint32_t TIMEOUT_MSEC = 1000;
 
 int main()
 {
     char buf[BUFLEN];
 
-    UdpServerSocket server(PORT);
+    UdpServerSocket server(PORT, TIMEOUT_MSEC);
 
     while (true) {
 
@@ -27,11 +28,20 @@ int main()
 
         memset(buf, 0, BUFLEN);
 
+        *buf = 0;
+
         server.receiveData(buf, BUFLEN);
 
-        printf("Data: %s\n", buf);
+        if (*buf) {
+            printf("Data: %s\n", buf);
+            server.sendData(buf, strlen(buf));
+        }
 
-        server.sendData(buf, strlen(buf));
+        else {
+            printf("\n");
+            sleep(1);
+        }
+
     }
 
     server.closeConnection();
