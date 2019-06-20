@@ -107,6 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,9 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\examples\udpclient.cpp" />
-    <ClCompile Include="..\..\..\sockets\SocketCompat.cpp" />
-    <ClCompile Include="..\..\..\sockets\UdpClientSocket.cpp" />
-    <ClCompile Include="..\..\..\sockets\UdpSocket.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

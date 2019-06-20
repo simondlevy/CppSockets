@@ -156,9 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\examples\udpserver.cpp" />
-    <ClCompile Include="..\..\..\sockets\SocketCompat.cpp" />
-    <ClCompile Include="..\..\..\sockets\UdpServerSocket.cpp" />
-    <ClCompile Include="..\..\..\sockets\UdpSocket.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
