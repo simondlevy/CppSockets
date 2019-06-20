@@ -26,8 +26,8 @@ tcpclient: tcpclient.o TcpClientSocket.o TcpSocket.o SocketCompat.o
 tcpclient.o: ../examples/tcpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
 
-udpclient: udpclient.o UdpClientSocket.o SocketCompat.o 
-	g++ -o udpclient udpclient.o UdpClientSocket.o SocketCompat.o
+udpclient: udpclient.o SocketCompat.o 
+	g++ -o udpclient udpclient.o SocketCompat.o
 
 udpclient.o: ../examples/udpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
@@ -46,9 +46,6 @@ TcpServerSocket.o: ../sockets/TcpServerSocket.cpp ../sockets/TcpServerSocket.h .
 
 TcpSocket.o: ../sockets/TcpSocket.cpp ../sockets/TcpSocket.h
 	g++ $(CFLAGS) -c ../sockets/TcpSocket.cpp
-
-UdpClientSocket.o: ../sockets/UdpClientSocket.cpp ../sockets/UdpClientSocket.h ../sockets/SocketCompat.h
-	g++ $(CFLAGS) -c ../sockets/UdpClientSocket.cpp
 
 UdpServerSocket.o: ../sockets/UdpServerSocket.cpp ../sockets/UdpServerSocket.h ../sockets/SocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/UdpServerSocket.cpp
