@@ -1,9 +1,5 @@
 *~
-*.pyc
 *.swp
-*.o
-linux/*server
-linux/*client
 *.VC.db
 *.suo
 *.opendb
@@ -12,5 +8,8 @@ linux/*client
 .kdev4
 .vscode
 Debug/
-windows/*/*/x64/
-windows/*/x64/
+sockets/
+UdpClient/UdpClient/x64/
+UdpClient/x64/
+UdpServer/UdpServer/x64/
+UdpServer/x64/

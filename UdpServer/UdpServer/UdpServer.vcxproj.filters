@@ -20,7 +20,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\examples\udpserver.cpp">
+    <ClCompile Include="..\..\examples\udpserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
