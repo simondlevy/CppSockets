@@ -16,3 +16,14 @@ for many applications, providing a simple API for rapid prototyping. For example
  
 The class header code is in the <b>sockets</b> folder, which you can copy/paste
 into your own project.
+
+# Testing on Windows
+
+```
+% git clone -b test_windows https://github.com/simondlevy/CppSockets
+% cd CppSockets
+% git clone https://github.com/simondlevy/CppSockets sockets
+
+```
+
+Then open the <b>UdpClient<b> and <b>UdpServer</b> projects, and run them in Release mode.
