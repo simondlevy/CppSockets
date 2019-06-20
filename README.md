@@ -1,4 +1,4 @@
-This repository contains C++ classes and example code for using sockets on
+This repository contains header-only C++ classes and example code for using sockets on
 Linux and Windows.  The classes hide the details that you don't need to worry about
 for many applications, providing a simple API for rapid prototyping. For example:
 
@@ -14,5 +14,5 @@ for many applications, providing a simple API for rapid prototyping. For example
     client.receiveData(message, 100);
 ```
  
-The class header and implementation code is in the <b>sockets</b> folder, which
-you can copy/paste into your own project.
+The class header code is in the <b>sockets</b> folder, which you can copy/paste
+into your own project.
