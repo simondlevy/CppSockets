@@ -11,6 +11,7 @@
 #include "UdpSocket.hpp"
 
 #include <string.h>
+#include <time.h>
 
 class UdpClientSocket : public UdpSocket {
 
@@ -26,6 +27,13 @@ class UdpClientSocket : public UdpSocket {
             if (_sock == SOCKET_ERROR) {
                 sprintf_s(_message, "socket() failed");
                 return;
+            }
+
+            struct timeval tv;
+            tv.tv_sec = 0;
+            tv.tv_usec = 100000;
+            if (setsockopt(_sock, SOL_SOCKET, SO_RCVTIMEO,&tv,sizeof(tv)) < 0) {
+                    perror("Error");
             }
 
             // Setup address structure
