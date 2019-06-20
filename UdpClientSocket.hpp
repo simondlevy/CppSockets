@@ -29,13 +29,6 @@ class UdpClientSocket : public UdpSocket {
                 return;
             }
 
-            struct timeval tv;
-            tv.tv_sec = 0;
-            tv.tv_usec = 100000;
-            if (setsockopt(_sock, SOL_SOCKET, SO_RCVTIMEO,&tv,sizeof(tv)) < 0) {
-                    perror("Error");
-            }
-
             // Setup address structure
             memset((char *)&_si_other, 0, sizeof(_si_other));
             _si_other.sin_family = AF_INET;
