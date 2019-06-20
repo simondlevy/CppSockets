@@ -17,26 +17,26 @@ all: $(ALL)
 tcpserver: tcpserver.o 
 	g++ -o tcpserver tcpserver.o 
 
-tcpserver.o: ../examples/tcpserver.cpp
-	g++ $(CFLAGS) -I../sockets -c ../examples/tcpserver.cpp
+tcpserver.o: examples/tcpserver.cpp
+	g++ $(CFLAGS) -Isockets -c examples/tcpserver.cpp
 
 tcpclient: tcpclient.o 
 	g++ -o tcpclient tcpclient.o 
 
-tcpclient.o: ../examples/tcpclient.cpp
-	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
+tcpclient.o: examples/tcpclient.cpp
+	g++ $(CFLAGS) -Isockets -c examples/tcpclient.cpp
 
 udpclient: udpclient.o 
 	g++ -o udpclient udpclient.o 
 
-udpclient.o: ../examples/udpclient.cpp
-	g++ $(CFLAGS) -I../sockets -c ../examples/udpclient.cpp
+udpclient.o: examples/udpclient.cpp
+	g++ $(CFLAGS) -Isockets -c examples/udpclient.cpp
 
 udpserver: udpserver.o  
 	g++ -o udpserver udpserver.o 
 
-udpserver.o: ../examples/udpserver.cpp
-	g++ $(CFLAGS) -I../sockets -c ../examples/udpserver.cpp
+udpserver.o: examples/udpserver.cpp
+	g++ $(CFLAGS) -Isockets -c examples/udpserver.cpp
 
 clean:
 	rm -rf $(ALL) *.o *.csv *~ __pycache__
