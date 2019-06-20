@@ -14,7 +14,7 @@ class UdpServerSocket : public UdpSocket {
 
     public:
 
-        UdpServerSocket(const short port)
+        UdpServerSocket(const short port, const uint32_t timeoutMsec=0)
         {
             // Initialize Winsock, returning on failure
             if (!initWinsock()) return;
@@ -37,5 +37,8 @@ class UdpServerSocket : public UdpSocket {
                 sprintf_s(_message, "bind() failed");
                 return;
             }
+
+            // Check for / set up optional timeout for receiveData
+            UdpSocket::setUdpTimeout(timeoutMsec);
         }
 };

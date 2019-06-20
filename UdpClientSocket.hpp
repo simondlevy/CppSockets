@@ -17,7 +17,7 @@ class UdpClientSocket : public UdpSocket {
 
     public:
 
-        UdpClientSocket(const char * host, const short port)
+        UdpClientSocket(const char * host, const short port, const uint32_t timeoutMsec=0)
         {
             // Initialize Winsock, returning on failure
             if (!initWinsock()) return;
@@ -34,5 +34,8 @@ class UdpClientSocket : public UdpSocket {
             _si_other.sin_family = AF_INET;
             _si_other.sin_port = htons(port);
             Socket::inetPton(host, _si_other);
+
+            // Check for / set up optional timeout for receiveData
+            UdpSocket::setUdpTimeout(timeoutMsec);
         }
 };
