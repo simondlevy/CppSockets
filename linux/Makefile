@@ -14,14 +14,14 @@ CFLAGS = -Wall -std=c++11
 
 all: $(ALL)
 
-tcpserver: tcpserver.o TcpServerSocket.o TcpSocket.o SocketCompat.o
-	g++ -o tcpserver tcpserver.o TcpServerSocket.o TcpSocket.o SocketCompat.o
+tcpserver: tcpserver.o SocketCompat.o
+	g++ -o tcpserver tcpserver.o SocketCompat.o
 
 tcpserver.o: ../examples/tcpserver.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpserver.cpp
 
-tcpclient: tcpclient.o TcpClientSocket.o TcpSocket.o SocketCompat.o
-	g++ -o tcpclient tcpclient.o TcpClientSocket.o TcpSocket.o SocketCompat.o
+tcpclient: tcpclient.o TcpClientSocket.o SocketCompat.o
+	g++ -o tcpclient tcpclient.o TcpClientSocket.o SocketCompat.o
 
 tcpclient.o: ../examples/tcpclient.cpp
 	g++ $(CFLAGS) -I../sockets -c ../examples/tcpclient.cpp
@@ -40,9 +40,6 @@ udpserver.o: ../examples/udpserver.cpp
 
 TcpClientSocket.o: ../sockets/TcpClientSocket.cpp ../sockets/TcpClientSocket.h ../sockets/TcpSocket.hpp
 	g++ $(CFLAGS) -c ../sockets/TcpClientSocket.cpp
-
-TcpServerSocket.o: ../sockets/TcpServerSocket.cpp ../sockets/TcpServerSocket.h ../sockets/TcpSocket.hpp
-	g++ $(CFLAGS) -c ../sockets/TcpServerSocket.cpp
 
 SocketCompat.o: ../sockets/SocketCompat.cpp ../sockets/SocketCompat.h
 	g++ $(CFLAGS) -c ../sockets/SocketCompat.cpp
